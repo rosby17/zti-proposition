@@ -45,14 +45,13 @@ if (boutonsVision.length) {
 $$('[data-calculateur]').forEach(root => {
   const grille = JSON.parse(root.dataset.grille || '[]');
   const prix = $('[data-calc="prix"]', root), postes = $('[data-calc="postes"]', root);
-  const doux = !matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // chiffre qui glisse vers sa nouvelle valeur
+  // nouveau chiffre affiché d'un coup, avec un léger fondu seulement sur ce qui a changé (pas de défilement)
   const out = (k, v, dec = 0) => $$(`[data-out="${k}"]`, root).forEach(e => {
-    const ecrire = x => { e.textContent = dec ? x.toFixed(dec).replace('.', ',') : fmt(x); };
-    const de = +(e.dataset.v || 0); e.dataset.v = v;
-    if (!doux || !isFinite(v) || de === v) return ecrire(v);
-    const t0 = performance.now(), pas = t => { const p = Math.min(1, (t - t0) / 420); ecrire(de + (v - de) * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(pas); };
-    requestAnimationFrame(pas);
+    const texte = dec ? v.toFixed(dec).replace('.', ',') : fmt(v);
+    if (e.textContent === texte) return;
+    const premiere = !e.textContent;
+    e.textContent = texte;
+    if (!premiere) { e.classList.remove('change'); void e.offsetWidth; e.classList.add('change'); }
   });
   const lire = el => +String(el.value).replace(/\D/g, '') || 0;
   const maj = () => {

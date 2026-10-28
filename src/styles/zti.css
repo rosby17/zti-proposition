@@ -198,6 +198,10 @@ a.carte:hover { transform: translateY(-4px); box-shadow: 0 18px 36px rgba(2,0,13
 }
 @media (max-width: 420px) { .calc-tableau td { font-size: 16px; padding-left: 10px; } .calc-tableau th:first-child { font-size: 14px; } }
 
+@keyframes calc-change { from { opacity: .35; } to { opacity: 1; } }
+.calc .change { animation: calc-change .35s ease-out; }
+@media (prefers-reduced-motion: reduce) { .calc .change { animation: none; } }
+
 /* ——— packs ——— */
 .pack { border-radius: var(--rayon); padding: 26px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.14); display: flex; flex-direction: column; gap: 12px; }
 .pack .badge { align-self: flex-start; font: 600 11px/1 var(--titres); letter-spacing: .12em; text-transform: uppercase; padding: 7px 10px; border-radius: 999px; background: rgba(159,208,255,.16); color: var(--ciel); }
