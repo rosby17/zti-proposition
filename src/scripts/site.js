@@ -2,7 +2,7 @@
 // calculateur du coût réel, formulaire de demande (Google Sheet + e-mail via Apps Script) et page « Merci ».
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-const fmt = n => Math.round(n).toLocaleString('fr-FR').replace(/[  ]/g, ' ');
+const fmt = n => Math.round(n).toLocaleString('fr-FR').replace(/\s/g, '\u00a0');
 const suivi = (ev, p) => { if (window.fbq) window.fbq('track', ev, p); };
 
 /* ---------- menu sur téléphone ---------- */
@@ -45,22 +45,38 @@ if (boutonsVision.length) {
 $$('[data-calculateur]').forEach(root => {
   const grille = JSON.parse(root.dataset.grille || '[]');
   const prix = $('[data-calc="prix"]', root), postes = $('[data-calc="postes"]', root);
-  const out = (k, v) => { const e = $(`[data-out="${k}"]`, root); if (e) e.textContent = v; };
+  const doux = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // chiffre qui glisse vers sa nouvelle valeur
+  const out = (k, v, dec = 0) => $$(`[data-out="${k}"]`, root).forEach(e => {
+    const ecrire = x => { e.textContent = dec ? x.toFixed(dec).replace('.', ',') : fmt(x); };
+    const de = +(e.dataset.v || 0); e.dataset.v = v;
+    if (!doux || !isFinite(v) || de === v) return ecrire(v);
+    const t0 = performance.now(), pas = t => { const p = Math.min(1, (t - t0) / 420); ecrire(de + (v - de) * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(pas); };
+    requestAnimationFrame(pas);
+  });
+  const lire = el => +String(el.value).replace(/\D/g, '') || 0;
   const maj = () => {
-    const P = Math.max(0, +String(prix.value).replace(/\D/g, '') || 0);
-    const N = Math.max(1, Math.min(9999, +String(postes.value).replace(/\D/g, '') || 1));
-    out('m24', fmt(P / 24)); out('a24', fmt(P / 2)); out('m36', fmt(P / 36)); out('a36', fmt(P / 3)); out('g1', fmt(P / 2 - P / 3));
+    const P = Math.max(0, lire(prix)), N = Math.max(1, Math.min(9999, lire(postes) || 1));
+    out('m24', P / 24); out('a24', P / 2); out('m36', P / 36); out('m36b', P / 36); out('a36', P / 3); out('g1', P / 2 - P / 3);
     const T = P * N;
-    out('n', N); out('total', fmt(T)); out('sa24', fmt(T / 2)); out('sa36', fmt(T / 3)); out('g2', fmt(T / 2 - T / 3));
+    $$('[data-out="n"]', root).forEach(e => { e.textContent = N; });
+    out('total', T); out('sa24', T / 2); out('sm24', T / 24); out('sa36', T / 3); out('sm36', T / 36); out('g2', T / 2 - T / 3);
     if (grille.length) {
       const pp = (grille.find(([max]) => N <= max) || grille[grille.length - 1])[1];
-      out('pp', fmt(pp)); out('ps', fmt(pp * N));
-      out('mois', P > 0 ? (pp / (P / 36)).toFixed(1).replace('.', ',') : '—');
+      const mois = P > 0 ? pp / (P / 36) : 0;
+      out('pp', pp); out('pp2', pp); out('ps', pp * N); out('mois', mois, 1); out('mois2', mois, 1);
+      // frise : remboursé jusqu'au repère, économie au-delà
+      const pasG = root.clientWidth < 520 ? 6 : 3, fin = Math.max(12, Math.ceil((mois + 4) / pasG) * pasG), part = Math.min(100, mois / fin * 100);
+      const paye = $('[data-frise="paye"]', root), rep = $('[data-frise="repere"]', root), grad = $('[data-frise="graduations"]', root);
+      if (paye) { paye.style.width = part + '%'; rep.style.left = part + '%'; rep.hidden = !(P > 0); }
+      if (grad) grad.innerHTML = Array.from({ length: fin / pasG + 1 }, (_, i) => i * pasG === fin ? `<span style="left:100%;transform:translateX(-100%)">${fin} mois</span>` : `<span style="left:${i * pasG / fin * 100}%">${i * pasG}</span>`).join('');
     }
   };
-  prix.addEventListener('input', () => { const n = String(prix.value).replace(/\D/g, ''); prix.value = n ? fmt(+n) : ''; maj(); });
+  prix.addEventListener('input', () => { const n = String(prix.value).replace(/\D/g, '').slice(0, 9); prix.value = n ? fmt(+n) : ''; maj(); });
   postes.addEventListener('input', () => { postes.value = String(postes.value).replace(/\D/g, '').slice(0, 4); maj(); });
+  $$('[data-pas]', root).forEach(b => b.addEventListener('click', () => { postes.value = Math.max(1, Math.min(9999, (lire(postes) || 1) + +b.dataset.pas)); maj(); }));
   maj();
+  addEventListener('resize', () => { clearTimeout(root._t); root._t = setTimeout(maj, 200); });
 });
 
 /* ---------- source de la visite (publicités) : gardée pendant la visite ---------- */
