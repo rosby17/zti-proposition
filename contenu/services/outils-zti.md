@@ -2,6 +2,7 @@
 titre: Les outils créés par ZTi
 accroche: ZTi ne se contente pas de solutions importées. Elle les crée quand le besoin l'exige.
 resume: Trois outils développés au Cameroun, pour les problèmes du Cameroun.
+image: /images/service-outils.webp
 publics: [ecoles, entreprises, institutions]
 points:
   - Offerts avec tous les packs, à l'administration uniquement

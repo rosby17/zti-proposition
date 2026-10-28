@@ -36,6 +36,7 @@ sections:
       - Données perdues, sauvegardes introuvables
       - Équipe paralysée, personne ne sait quoi faire
       - Un client qui appelle, une réunion dans deux heures
+    image: /images/pme-panne.webp
   - type: texte_image
     fond: ivoire
     etiquette: Ce que Marc aurait aimé savoir
@@ -48,6 +49,8 @@ sections:
       - Logiciels installés sans véritable suivi
       - Sécurité informatique insuffisante
     mention: "La vraie question : votre entreprise est-elle prête quand cela arrivera ?"
+    image: /images/public-entreprises.webp
+    image_position: gauche
   - type: cartes
     fond: nuit
     etiquette: L'audit informatique ZTi

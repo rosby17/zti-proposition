@@ -2,7 +2,7 @@
 titre: Maintenance du parc informatique
 accroche: Des postes prêts à travailler, qui tombent moins en panne et qui durent plus longtemps.
 resume: Quatre packs d'entretien, choisis après un diagnostic offert de chaque poste.
-image: /images/demarrage.jpg
+image: /images/service-maintenance.webp
 publics: [ecoles, entreprises, institutions]
 points:
   - Diagnostic sur site et Fiche de Parc, offerts

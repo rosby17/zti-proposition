@@ -55,12 +55,16 @@ sections:
     numeroter: true
     cartes:
       - titre: Le diagnostic offert
+        image: /images/methode-diagnostic.webp
         texte: "ZTi vient sur place et établit la Fiche de Parc : l'état réel de chaque poste."
       - titre: Vous choisissez
+        image: /images/ecoles-hero.webp
         texte: "Le diagnostic en main, vous choisissez le pack qui vous convient. Vous restez l'unique décideur."
       - titre: L'intervention
+        image: /images/demarrage.jpg
         texte: "Prise en charge sous 48 h, 24 h ou en priorité selon le pack choisi."
       - titre: Le constat signé
+        image: /images/methode-constat.webp
         texte: "Procès-verbal de réception poste par poste : avant de payer le solde, vous vérifiez chaque poste."
   - type: cartes
     fond: ivoire

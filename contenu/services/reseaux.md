@@ -2,6 +2,7 @@
 titre: Réseaux informatiques
 accroche: "À compléter par ZTi : installation et maintenance des réseaux."
 resume: "À compléter par ZTi."
+image: /images/service-reseaux.webp
 publics: [entreprises, institutions, ecoles]
 ordre: 7
 en_ligne: false
