@@ -22,7 +22,7 @@ sections:
     cadrage: droite
     bas: "Votre outil informatique doit travailler pour vous, pas l'inverse. Écoles · Collèges · Lycées"
   - type: calculateur
-    fond: nuit
+    fond: blanc
     ancre: cout-reel
     etiquette: Une formule simple pour connaître le coût réel d'un poste
     titre: Combien coûte réellement un ordinateur ?
@@ -43,7 +43,7 @@ sections:
       - prix: 8000
     mention: "Ces calculs prennent uniquement en compte le prix d'achat réparti sur la durée d'utilisation. Ils ne garantissent aucune durée de vie : ils indiquent à partir de quand l'entretien est remboursé. Prix hors taxes, par poste, applicables pendant l'année scolaire, pour les établissements privés ; les établissements publics et assimilés font l'objet d'une cotation distincte."
   - type: texte_image
-    fond: blanc
+    fond: ivoire
     etiquette: Vos données
     titre: Une unité centrale se rachète. Les bulletins d'une promotion, non.
     texte: Si le disque du secrétariat lâche demain, où sont les notes du trimestre ?
@@ -54,7 +54,7 @@ sections:
     mention: La récupération de données n'est jamais garantie. La sauvegarde, si.
     image: /images/diagnostic-ecran.jpg
   - type: texte_image
-    fond: ivoire
+    fond: blanc
     etiquette: La Protection ZTi
     titre: Un redémarrage, et le poste redevient propre.
     texte: "Virus des clés USB, logiciels installés par les élèves, réglages modifiés : tout disparaît au redémarrage."

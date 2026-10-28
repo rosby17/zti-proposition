@@ -157,60 +157,46 @@ a.carte:hover { transform: translateY(-4px); box-shadow: 0 18px 36px rgba(2,0,13
 .texte-image .liste-coches { margin-top: 18px; }
 @media (max-width: 860px) { .texte-image .grille { grid-template-columns: 1fr; } .texte-image.image-gauche .visuel { order: 0; } }
 
-/* ——— calculateur du coût réel ——— */
-.calc { margin-top: 36px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
-.calc-reglages { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: end; padding: 24px; border-radius: 22px;
-  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(10px); }
-.calc-champ label { display: block; font: 600 13px var(--texte); letter-spacing: .04em; color: var(--ciel); margin-bottom: 8px; }
-.calc-saisie { display: flex; align-items: center; background: var(--blanc); border-radius: 14px; padding: 0 16px; min-height: 64px; box-shadow: 0 10px 24px rgba(0,0,0,.25); }
-.calc-saisie input { flex: 1; width: 100%; min-width: 0; border: 0; background: none; font: 800 28px var(--titres); color: var(--logo); padding: 12px 0; outline: none; }
-.calc-saisie span { font: 600 14px var(--texte); color: var(--gris); margin-left: 8px; }
-.calc-saisie:focus-within { box-shadow: 0 0 0 3px var(--vif), 0 10px 24px rgba(0,0,0,.25); }
-.calc-pas { padding: 0 8px; }
+/* ——— calculateur du coût réel (épuré : fond blanc, chiffres nets, un seul accent bleu) ——— */
+.calc { margin-top: 40px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; border: 1px solid var(--lavande); border-radius: 24px; background: var(--blanc); color: var(--ardoise); overflow: hidden; }
+.calc-corps { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
+.calc-entrees { padding: clamp(24px, 4vw, 40px); background: var(--ivoire); display: grid; gap: 28px; align-content: start; border-right: 1px solid var(--lavande); }
+.calc-champ label { display: block; font: 500 13px var(--texte); color: var(--gris); margin-bottom: 6px; }
+.calc-saisie { display: flex; align-items: baseline; gap: 10px; border-bottom: 2px solid var(--brume); transition: border-color .15s; }
+.calc-saisie:focus-within { border-color: var(--logo); }
+.calc-saisie input { flex: 1; width: 100%; min-width: 0; border: 0; background: none; outline: none; padding: 4px 0 10px; font: 700 clamp(30px, 4vw, 40px)/1.1 var(--titres); color: var(--logo); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.calc-saisie span { font: 500 15px var(--texte); color: var(--gris); }
+.calc-pas { align-items: center; }
 .calc-pas input { text-align: center; }
-.calc-pas button { width: 44px; height: 44px; flex: none; border-radius: 12px; border: 0; background: var(--pale); color: var(--logo); font: 700 24px/1 var(--titres); cursor: pointer; transition: background-color .15s, color .15s; }
-.calc-pas button:hover { background: var(--logo); color: var(--blanc); }
-.calc-formule { margin: 0; font-size: 13px; line-height: 1.6; color: var(--lavande); }
-.calc-formule b { color: var(--blanc); }
-.calc-titre { margin: 18px 0 0; font-size: 15px; letter-spacing: .14em; text-transform: uppercase; color: var(--ciel) !important; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
-.calc-titre small { font: 600 14px var(--texte); letter-spacing: 0; text-transform: none; color: var(--lavande); }
-.calc-duel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
-.calc-duree { position: relative; padding: 24px 26px 22px; border-radius: 22px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12); }
-.calc-mieux { background: linear-gradient(160deg, rgba(21,101,255,.28), rgba(2,0,138,.35)); border-color: rgba(159,208,255,.55); box-shadow: 0 18px 40px rgba(21,101,255,.18); }
-.calc-quand { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font: 600 15px var(--texte); color: var(--lavande); }
-.calc-quand em { font: 700 11px/1 var(--titres); font-style: normal; letter-spacing: .1em; text-transform: uppercase; padding: 6px 9px; border-radius: 999px; background: var(--ciel); color: var(--nuit); }
-.calc-gros { margin: 12px 0 2px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
-.calc-gros b { font: 800 clamp(34px, 5vw, 54px)/1 var(--titres); color: var(--blanc); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
-.calc-gros span { font: 600 15px var(--texte); color: var(--lavande); }
-.calc-an { margin: 0 0 16px; font-size: 15px; color: var(--lavande); } .calc-an b { color: var(--blanc); font-weight: 700; }
-.calc-barre { height: 8px; border-radius: 99px; background: rgba(255,255,255,.08); overflow: hidden; }
-.calc-barre i { display: block; height: 100%; border-radius: 99px; background: var(--gris); }
-.calc-mieux .calc-barre i { background: linear-gradient(90deg, var(--ciel), var(--vif)); }
-.calc-eco { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 16px 22px; border-radius: 16px;
-  background: rgba(159,208,255,.1); border: 1px dashed rgba(159,208,255,.45); color: var(--lavande); }
-.calc-eco > span { font: 700 11px/1 var(--titres); letter-spacing: .14em; text-transform: uppercase; color: var(--nuit); background: var(--ciel); padding: 7px 10px; border-radius: 999px; }
-.calc-eco b { font: 800 24px var(--titres); color: var(--blanc); }
-.calc-rentable { margin-top: 18px; padding: clamp(22px, 4vw, 34px); border-radius: 24px; background: var(--blanc); color: var(--ardoise); box-shadow: 0 26px 60px rgba(0,0,0,.3); }
-.calc-rentable h3 { color: var(--logo) !important; font-size: clamp(22px, 3vw, 30px); margin: 0; }
-.calc-rentable .etiquette { color: var(--vif) !important; }
-.calc-rentable-tete { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 18px; }
-.calc-pack { text-align: right; } .calc-pack .calc-pack-nom { display: block; font: 600 13px var(--texte); color: var(--gris); }
-.calc-pack b { display: block; font: 800 30px var(--titres); color: var(--logo); } .calc-pack small { font-size: 13px; color: var(--ardoise); }
-.calc-frise { position: relative; height: 64px; margin: 34px 0 30px; display: flex; }
-.calc-frise-paye { height: 18px; margin-top: 30px; border-radius: 99px 0 0 99px; background: repeating-linear-gradient(135deg, var(--brume) 0 8px, var(--lavande) 8px 16px); }
-.calc-frise-gagne { height: 18px; margin-top: 30px; flex: 1; border-radius: 0 99px 99px 0; background: linear-gradient(90deg, var(--vif), var(--logo)); }
-.calc-repere { position: absolute; top: 0; transform: translateX(-50%); display: grid; justify-items: center; gap: 4px; white-space: nowrap; }
-.calc-repere b { font: 800 14px var(--titres); color: var(--blanc); background: var(--logo); padding: 5px 10px; border-radius: 999px; }
-.calc-repere::after { content: ''; width: 3px; height: 28px; background: var(--logo); border-radius: 2px; }
-.calc-graduations { position: absolute; left: 0; right: 0; top: 54px; height: 16px; font-size: 12px; color: var(--gris); }
-.calc-graduations span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
-.calc-verdict { margin: 0; font-size: 16px; } .calc-verdict b { color: var(--logo); } .calc-verdict strong { color: var(--logo); display: block; margin-top: 6px; }
-.calc-notes { display: grid; gap: 8px; color: var(--lavande); font-size: 15px; } .calc-notes b { color: var(--blanc); } .calc-notes p { margin: 0; }
-@media (max-width: 860px) { .calc-reglages { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .calc-formule { grid-column: 1 / -1; } }
-@media (max-width: 600px) {
-  .calc-reglages { grid-template-columns: 1fr; padding: 18px; } .calc-duel { grid-template-columns: 1fr; }
-  .calc-pack { text-align: left; } .calc-eco b { font-size: 21px; }
+.calc-pas button { width: 38px; height: 38px; flex: none; border-radius: 50%; border: 1px solid var(--brume); background: var(--blanc); color: var(--logo); font: 500 20px/1 var(--texte); cursor: pointer; transition: border-color .15s, background-color .15s, color .15s; }
+.calc-pas button:hover { border-color: var(--logo); background: var(--logo); color: var(--blanc); }
+.calc-formule { margin: 0; font-size: 13px; line-height: 1.7; color: var(--gris); }
+.calc-detail { padding: clamp(24px, 4vw, 40px); }
+.calc-tableau { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.calc-tableau th, .calc-tableau td { padding: 12px 0; text-align: right; border-bottom: 1px solid var(--pale); }
+.calc-tableau th:first-child { text-align: left; font: 400 15px var(--texte); color: var(--ardoise); }
+.calc-tableau thead th { font: 600 13px var(--texte); color: var(--gris); padding-top: 0; border-bottom: 1px solid var(--lavande); }
+.calc-tableau thead th.calc-mieux { color: var(--vif); }
+.calc-tableau .calc-unite { font-weight: 400; }
+.calc-tableau td { font: 600 18px var(--titres); color: var(--ardoise); padding-left: 18px; }
+.calc-tableau td.calc-mieux { color: var(--logo); font-weight: 800; }
+.calc-tableau .calc-groupe th { padding: 26px 0 8px; font: 700 12px var(--titres) !important; letter-spacing: .14em; text-transform: uppercase; color: var(--logo) !important; border-bottom: 0; text-align: left; }
+.calc-tableau tbody .calc-groupe:first-child th { padding-top: 14px; }
+.calc-eco { margin: 22px 0 0; font-size: 15px; color: var(--ardoise); }
+.calc-eco b { color: var(--logo); font-weight: 700; white-space: nowrap; }
+.calc-rentable { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 28px; align-items: center; padding: clamp(24px, 4vw, 40px); border-top: 1px solid var(--lavande); }
+.calc-rentable h3 { margin: 0 0 8px; font-size: 20px; color: var(--logo); }
+.calc-rentable p { margin: 0; font-size: 15px; } .calc-rentable p b { color: var(--logo); }
+.calc-chiffre { display: flex; align-items: center; gap: 16px; }
+.calc-chiffre > b { font: 800 clamp(44px, 6vw, 64px)/1 var(--titres); color: var(--logo); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.calc-chiffre > span { font-size: 14px; line-height: 1.5; color: var(--ardoise); }
+.calc-notes { padding: 18px clamp(24px, 4vw, 40px) 24px; background: var(--ivoire); border-top: 1px solid var(--lavande); display: grid; gap: 6px; font-size: 14px; color: var(--ardoise); }
+.calc-notes p { margin: 0; }
+@media (max-width: 860px) {
+  .calc-corps, .calc-rentable { grid-template-columns: minmax(0, 1fr); }
+  .calc-entrees { border-right: 0; border-bottom: 1px solid var(--lavande); }
 }
+@media (max-width: 420px) { .calc-tableau td { font-size: 16px; padding-left: 10px; } .calc-tableau th:first-child { font-size: 14px; } }
 
 /* ——— packs ——— */
 .pack { border-radius: var(--rayon); padding: 26px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.14); display: flex; flex-direction: column; gap: 12px; }

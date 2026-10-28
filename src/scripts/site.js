@@ -64,19 +64,13 @@ $$('[data-calculateur]').forEach(root => {
     if (grille.length) {
       const pp = (grille.find(([max]) => N <= max) || grille[grille.length - 1])[1];
       const mois = P > 0 ? pp / (P / 36) : 0;
-      out('pp', pp); out('pp2', pp); out('ps', pp * N); out('mois', mois, 1); out('mois2', mois, 1);
-      // frise : remboursé jusqu'au repère, économie au-delà
-      const pasG = root.clientWidth < 520 ? 6 : 3, fin = Math.max(12, Math.ceil((mois + 4) / pasG) * pasG), part = Math.min(100, mois / fin * 100);
-      const paye = $('[data-frise="paye"]', root), rep = $('[data-frise="repere"]', root), grad = $('[data-frise="graduations"]', root);
-      if (paye) { paye.style.width = part + '%'; rep.style.left = part + '%'; rep.hidden = !(P > 0); }
-      if (grad) grad.innerHTML = Array.from({ length: fin / pasG + 1 }, (_, i) => i * pasG === fin ? `<span style="left:100%;transform:translateX(-100%)">${fin} mois</span>` : `<span style="left:${i * pasG / fin * 100}%">${i * pasG}</span>`).join('');
+      out('pp', pp); out('ps', pp * N); out('mois', mois, 1);
     }
   };
   prix.addEventListener('input', () => { const n = String(prix.value).replace(/\D/g, '').slice(0, 9); prix.value = n ? fmt(+n) : ''; maj(); });
   postes.addEventListener('input', () => { postes.value = String(postes.value).replace(/\D/g, '').slice(0, 4); maj(); });
   $$('[data-pas]', root).forEach(b => b.addEventListener('click', () => { postes.value = Math.max(1, Math.min(9999, (lire(postes) || 1) + +b.dataset.pas)); maj(); }));
   maj();
-  addEventListener('resize', () => { clearTimeout(root._t); root._t = setTimeout(maj, 200); });
 });
 
 /* ---------- source de la visite (publicités) : gardée pendant la visite ---------- */

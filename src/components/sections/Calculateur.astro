@@ -1,6 +1,7 @@
 ---
 // Calculateur du coût réel d'un poste (formule de l'offre ZTi : prix d'achat ÷ mois d'utilisation),
 // et, si une grille est saisie, la rentabilité de la maintenance (prix du pack selon le nombre de postes, jamais affiché en tableau).
+// Présentation épurée : deux saisies, un tableau 2 ans / 3 ans, une ligne d'économie, un chiffre pour la rentabilité.
 import Cadre from './Cadre.astro';
 const { s, premier = false } = Astro.props as { s: any; premier?: boolean };
 const prix = Number(s.prix_defaut) || 45000;
@@ -9,87 +10,60 @@ const grille = (s.grille || []).filter((g: any) => Number(g.prix) > 0)
   .map((g: any) => [g.jusqu_a ? Number(g.jusqu_a) : 1e9, Number(g.prix)]);
 const fmt = (n: number) => Math.round(n).toLocaleString('fr-FR').replace(/\s/g, '\u00a0');
 ---
-<Cadre premier={premier} s={s} defaut="nuit" id={s.ancre || 'cout-reel'}>
+<Cadre premier={premier} s={s} defaut="blanc" id={s.ancre || 'cout-reel'}>
   <div class="calc rv" data-calculateur data-grille={JSON.stringify(grille)}>
-
-    <div class="calc-reglages">
-      <div class="calc-champ">
-        <label for="calc-prix">Prix d'achat d'un ordinateur</label>
-        <div class="calc-saisie">
-          <input id="calc-prix" inputmode="numeric" autocomplete="off" value={fmt(prix)} data-calc="prix">
-          <span>F CFA</span>
+    <div class="calc-corps">
+      <div class="calc-entrees">
+        <div class="calc-champ">
+          <label for="calc-prix">Prix d'achat d'un ordinateur</label>
+          <div class="calc-saisie">
+            <input id="calc-prix" inputmode="numeric" autocomplete="off" value={fmt(prix)} data-calc="prix">
+            <span>F CFA</span>
+          </div>
         </div>
-      </div>
-      <div class="calc-champ">
-        <label for="calc-postes">Nombre d'ordinateurs de la salle</label>
-        <div class="calc-saisie calc-pas">
-          <button type="button" data-pas="-1" aria-label="Un ordinateur de moins">−</button>
-          <input id="calc-postes" inputmode="numeric" autocomplete="off" value={postes} data-calc="postes">
-          <button type="button" data-pas="1" aria-label="Un ordinateur de plus">+</button>
+        <div class="calc-champ">
+          <label for="calc-postes">Nombre d'ordinateurs</label>
+          <div class="calc-saisie calc-pas">
+            <button type="button" data-pas="-1" aria-label="Un ordinateur de moins">−</button>
+            <input id="calc-postes" inputmode="numeric" autocomplete="off" value={postes} data-calc="postes">
+            <button type="button" data-pas="1" aria-label="Un ordinateur de plus">+</button>
+          </div>
         </div>
+        <p class="calc-formule">Coût mensuel = prix d'achat ÷ mois d'utilisation<br>Coût annuel = coût mensuel × 12</p>
       </div>
-      <p class="calc-formule"><b>Coût mensuel</b> = prix d'achat ÷ mois d'utilisation<br><b>Coût annuel</b> = coût mensuel × 12</p>
-    </div>
 
-    <h3 class="calc-titre">Un ordinateur</h3>
-    <div class="calc-duel">
-      <div class="calc-duree">
-        <span class="calc-quand">Utilisé pendant 2 ans</span>
-        <p class="calc-gros"><b data-out="m24"></b><span>F CFA / mois</span></p>
-        <p class="calc-an"><b data-out="a24"></b> F CFA par an</p>
-        <div class="calc-barre"><i style="width:100%"></i></div>
-      </div>
-      <div class="calc-duree calc-mieux">
-        <span class="calc-quand">Utilisé pendant 3 ans <em>1 an de plus</em></span>
-        <p class="calc-gros"><b data-out="m36"></b><span>F CFA / mois</span></p>
-        <p class="calc-an"><b data-out="a36"></b> F CFA par an</p>
-        <div class="calc-barre"><i style="width:66.7%"></i></div>
-      </div>
-    </div>
-    <p class="calc-eco"><span>Économie</span><b><span data-out="g1"></span> F CFA</b> de moins par an et par ordinateur, en le faisant durer 3 ans au lieu de 2.</p>
-
-    <h3 class="calc-titre">Votre salle de <span data-out="n"></span> ordinateurs <small><span data-out="total"></span> F CFA investis</small></h3>
-    <div class="calc-duel">
-      <div class="calc-duree">
-        <span class="calc-quand">Sur 2 ans</span>
-        <p class="calc-gros"><b data-out="sa24"></b><span>F CFA / an</span></p>
-        <p class="calc-an"><b data-out="sm24"></b> F CFA par mois</p>
-        <div class="calc-barre"><i style="width:100%"></i></div>
-      </div>
-      <div class="calc-duree calc-mieux">
-        <span class="calc-quand">Sur 3 ans <em>1 an de plus</em></span>
-        <p class="calc-gros"><b data-out="sa36"></b><span>F CFA / an</span></p>
-        <p class="calc-an"><b data-out="sm36"></b> F CFA par mois</p>
-        <div class="calc-barre"><i style="width:66.7%"></i></div>
+      <div class="calc-detail">
+        <table class="calc-tableau">
+          <caption class="visuellement-cache">Coût réel selon la durée d'utilisation, en F CFA</caption>
+          <thead>
+            <tr><th scope="col"><span class="calc-unite">en F CFA</span></th><th scope="col">Utilisé 2 ans</th><th scope="col" class="calc-mieux">Utilisé 3 ans</th></tr>
+          </thead>
+          <tbody>
+            <tr class="calc-groupe"><th scope="rowgroup" colspan="3">Un ordinateur</th></tr>
+            <tr><th scope="row">Par mois</th><td data-out="m24"></td><td class="calc-mieux" data-out="m36"></td></tr>
+            <tr><th scope="row">Par an</th><td data-out="a24"></td><td class="calc-mieux" data-out="a36"></td></tr>
+            <tr class="calc-groupe"><th scope="rowgroup" colspan="3">La salle · <span data-out="n"></span> ordinateurs, <span data-out="total"></span> F CFA</th></tr>
+            <tr><th scope="row">Par mois</th><td data-out="sm24"></td><td class="calc-mieux" data-out="sm36"></td></tr>
+            <tr><th scope="row">Par an</th><td data-out="sa24"></td><td class="calc-mieux" data-out="sa36"></td></tr>
+          </tbody>
+        </table>
+        <p class="calc-eco">De 2 à 3 ans d'utilisation : <b><span data-out="g1"></span> F CFA</b> de moins par an et par ordinateur, <b><span data-out="g2"></span> F CFA</b> pour la salle.</p>
       </div>
     </div>
-    <p class="calc-eco"><span>Économie</span><b><span data-out="g2"></span> F CFA</b> de moins par an pour la salle.</p>
 
     {grille.length > 0 && (
       <div class="calc-rentable">
-        <div class="calc-rentable-tete">
-          <div>
-            <span class="etiquette">Ce que l'entretien vous rapporte</span>
-            <h3>{s.titre_rentabilite || 'La maintenance est-elle rentable ?'}</h3>
-          </div>
-          <div class="calc-pack">
-            <span class="calc-pack-nom">{s.nom_pack || 'Pack'}</span>
-            <b><span data-out="pp"></span> F CFA</b><small>par poste · <span data-out="ps"></span> F CFA pour la salle</small>
-          </div>
+        <div>
+          <h3>{s.titre_rentabilite || 'La maintenance est-elle rentable ?'}</h3>
+          <p>{s.nom_pack || 'Pack'} : <b><span data-out="pp"></span> F CFA</b> par poste, soit <span data-out="ps"></span> F CFA pour la salle.
+            Divisé par le coût mensuel d'un poste utilisé 3 ans (<span data-out="m36b"></span> F CFA), il donne le nombre de mois à partir duquel l'entretien est remboursé.</p>
         </div>
-        <div class="calc-frise" aria-hidden="true">
-          <div class="calc-frise-paye" data-frise="paye"></div>
-          <div class="calc-frise-gagne" data-frise="gagne"></div>
-          <span class="calc-repere" data-frise="repere"><b><span data-out="mois"></span> mois</b></span>
-          <div class="calc-graduations" data-frise="graduations"></div>
-        </div>
-        <p class="calc-verdict">L'entretien est remboursé après <b><span data-out="mois2"></span> mois</b> d'utilisation supplémentaire
-          (<span data-out="pp2"></span> F CFA ÷ <span data-out="m36b"></span> F CFA par mois). <strong>Chaque mois gagné au-delà est une économie pour l'établissement.</strong></p>
+        <p class="calc-chiffre"><b><span data-out="mois"></span></b><span>mois pour rembourser l'entretien.<br>Au-delà, chaque mois est une économie.</span></p>
       </div>
     )}
 
     <div class="calc-notes">
-      <p><b>L'essentiel à retenir :</b> la maintenance préventive et les bonnes pratiques d'utilisation contribuent à prolonger la durée de vie des équipements et à mieux rentabiliser l'investissement initial.</p>
+      <p>La maintenance préventive et les bonnes pratiques d'utilisation contribuent à prolonger la durée de vie des équipements et à mieux rentabiliser l'investissement initial.</p>
       {s.mention && <p class="mention">{s.mention}</p>}
     </div>
   </div>
