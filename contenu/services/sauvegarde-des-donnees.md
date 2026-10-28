@@ -2,6 +2,7 @@
 titre: Sauvegarde et récupération de données
 accroche: Une unité centrale se rachète. Les bulletins d'une promotion, non.
 resume: Sauvegarde automatique, dossiers isolés et restauration de vos données.
+image: /images/service-sauvegarde.webp
 publics: [ecoles, entreprises, institutions, particuliers]
 points:
   - Sauvegarde et restauration des données

@@ -2,6 +2,7 @@
 titre: Protection ZTi
 accroche: Un redémarrage, et le poste redevient propre.
 resume: "Virus des clés USB, logiciels installés par les élèves, réglages modifiés : tout disparaît au redémarrage."
+image: /images/service-protection.webp
 publics: [ecoles, entreprises, institutions]
 points:
   - Le système est remis à neuf à chaque redémarrage

@@ -15,7 +15,7 @@ sections:
       texte: Découvrir nos services
       lien: /services/
     sous_bouton: Offert · Sans engagement
-    image: /images/dirigeant.jpg
+    image: /images/accueil-hero.webp
     cadrage: droite
     bas: Votre outil informatique doit travailler pour vous, pas l'inverse.
   - type: cartes
@@ -24,18 +24,22 @@ sections:
     titre: Une offre pour chaque établissement.
     cartes:
       - titre: Écoles, collèges, lycées
+        image: /images/public-ecoles.webp
         texte: "Salle TIC et secrétariat : un diagnostic offert, puis quatre packs pour faire durer les postes."
         lien: /offres/diagnostic-ecoles/
         lien_texte: Réserver le diagnostic offert
       - titre: Entreprises
+        image: /images/public-entreprises.webp
         texte: "ZTi Système™ : une informatique stable, sécurisée et silencieuse, qui travaille pour vous."
         lien: /offres/audit-pme/
         lien_texte: Demander l'audit gratuit
       - titre: Institutions
+        image: /images/public-institutions.webp
         texte: "Maintenance, réseau et données des administrations et des organismes."
         lien: /contact/
         lien_texte: Nous écrire
       - titre: Particuliers
+        image: /images/public-particuliers.webp
         texte: "Un ordinateur qui ralentit, un virus, des fichiers à sauver : décrivez votre besoin."
         lien: /contact/
         lien_texte: Nous écrire

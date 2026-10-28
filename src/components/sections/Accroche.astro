@@ -27,7 +27,7 @@ const Titre = premier ? 'h1' : 'h2';
         )}
         {s.sous_bouton && <p class="sous-bouton">{s.sous_bouton}</p>}
       </div>
-      {s.image && <div class={`visuel ${premier ? '' : 'rv'}`}><img src={lien(s.image)} style={`object-position:${({ gauche: '15%', droite: '85%' } as any)[s.cadrage] || 'center'}`} alt={s.image_texte || ''} loading={premier ? 'eager' : 'lazy'} fetchpriority={premier ? 'high' : undefined}></div>}
+      {s.image && <div class={`visuel ${premier ? '' : 'rv'}`}><img src={lien(s.image)} style={`object-position:${({ gauche: '15% 30%', droite: '85% 30%', centre: '50% 30%' } as any)[s.cadrage] || '50% 30%'}`} alt={s.image_texte || ''} loading={premier ? 'eager' : 'lazy'} fetchpriority={premier ? 'high' : undefined}></div>}
     </div>
     {s.bas && <p class={`bas ${premier ? '' : 'rv'}`}>{s.bas}</p>}
   </div>
