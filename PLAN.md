@@ -121,3 +121,5 @@ attestations filigranées sont publiées.
 - **Pour mettre en ligne** : ZTi crée le dépôt vide `zeltuminitiative-com.github.io` sur son compte GitHub et y invite `rosby17`
   (le compte de Roosevelt ne peut pas créer de dépôt sur le compte de ZTi) ; on pousse ; Settings › Pages › « GitHub Actions » ;
   ZTi installe le script Google et colle son adresse dans Réglages du site ; ZTi se connecte à Pages CMS.
+- **28/10/2026 nuit : en ligne** sur https://rosby17.github.io/zti-site/ (dépôt public `rosby17/zti-site`, code sur `source`,
+  pages prêtes sur `main`). Reste : inviter ZTi, installer le script Google, tester Pages CMS.
