@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import Bouton from '../components/Bouton.astro';
+import { lien } from '../lib/contenu';
+---
+<Base titre="Page introuvable" indexer={false}>
+  <section class="section fond-nuit sombre page-simple">
+    <div class="contenu etroit">
+      <span class="etiquette">Erreur 404</span>
+      <h1>Cette page n'existe pas ou a changé d'adresse.</h1>
+      <p class="chapo">Les services et les offres de ZTi sont toujours là.</p>
+      <div class="actions"><Bouton texte="Retour à l'accueil" href="/" /><a class="lien" href={lien('/services/')}>Nos services</a></div>
+    </div>
+  </section>
+</Base>

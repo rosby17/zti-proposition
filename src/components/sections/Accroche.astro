@@ -1,0 +1,34 @@
+---
+import Bouton from '../Bouton.astro';
+import Icone from '../Icone.astro';
+import { md, lien } from '../../lib/contenu';
+const { s, premier } = Astro.props as { s: any; premier: boolean };
+const fond = s.fond || 'nuit';
+const sombre = ['nuit', 'bleu', 'noir'].includes(fond);
+const titre = String(s.titre || '');
+const accent = String(s.accent || '');
+const i = accent ? titre.indexOf(accent) : -1;
+const avant = i >= 0 ? titre.slice(0, i) : titre;
+const apres = i >= 0 ? titre.slice(i + accent.length) : '';
+const Titre = premier ? 'h1' : 'h2';
+---
+<section class={`section accroche fond-${fond} ${sombre ? 'sombre' : ''} ${s.image ? '' : 'sans-image'}`} id={s.ancre || undefined}>
+  <div class="contenu">
+    <div class="grille">
+      <div class={premier ? '' : 'rv'}>
+        {s.pastilles?.length > 0 && <ul class="pastilles">{s.pastilles.map((p: string) => <li>{p}</li>)}</ul>}
+        <Titre>{avant}{i >= 0 && <span class="accent">{accent}</span>}{apres}</Titre>
+        {s.texte && <div class="chapo texte-riche" set:html={md(s.texte)} />}
+        {(s.bouton?.texte || s.lien_secondaire?.texte) && (
+          <div class="actions">
+            {s.bouton?.texte && <Bouton texte={s.bouton.texte} href={s.bouton.lien || '#demande'} />}
+            {s.lien_secondaire?.texte && <a class="lien" href={lien(s.lien_secondaire.lien)}>{s.lien_secondaire.texte}<Icone nom="fleche" /></a>}
+          </div>
+        )}
+        {s.sous_bouton && <p class="sous-bouton">{s.sous_bouton}</p>}
+      </div>
+      {s.image && <div class={`visuel ${premier ? '' : 'rv'}`}><img src={lien(s.image)} style={`object-position:${({ gauche: '15%', droite: '85%' } as any)[s.cadrage] || 'center'}`} alt={s.image_texte || ''} loading={premier ? 'eager' : 'lazy'} fetchpriority={premier ? 'high' : undefined}></div>}
+    </div>
+    {s.bas && <p class={`bas ${premier ? '' : 'rv'}`}>{s.bas}</p>}
+  </div>
+</section>

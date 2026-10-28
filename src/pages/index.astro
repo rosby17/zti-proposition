@@ -1,0 +1,10 @@
+---
+import Base from '../layouts/Base.astro';
+import Sections from '../components/Sections.astro';
+import { getEntry } from 'astro:content';
+const p = await getEntry('pages', 'accueil');
+if (!p) throw new Error('contenu/pages/accueil.md manquant');
+---
+<Base titre={p.data.titre} description={p.data.description} image={p.data.image_partage}>
+  <Sections sections={p.data.sections} page="accueil" />
+</Base>

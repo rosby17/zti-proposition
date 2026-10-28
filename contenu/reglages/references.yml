@@ -1,0 +1,31 @@
+references:
+  - nom: Commission des Droits de l'Homme du Cameroun
+    logo: /images/references/cdhc.jpg
+    ordre: 1
+  - nom: Agence nationale de radioprotection
+    logo: /images/references/anrp.png
+    ordre: 2
+  - nom: Communauté urbaine de Yaoundé
+    logo: /images/references/cuy.jpg
+    ordre: 3
+  - nom: Centre de vaccinations internationales de Douala
+    logo: /images/references/cvid.jpg
+    ordre: 4
+  - nom: CALY SARL
+    logo: /images/references/caly.jpg
+    ordre: 5
+  - nom: Group Pennasol SARL
+    logo: /images/references/pennasol.png
+    ordre: 6
+  - nom: Miel Royal
+    logo: /images/references/miel-royal.jpg
+    ordre: 7
+  - nom: Info TV
+    logo: /images/references/infotv.jpg
+    ordre: 8
+  - nom: Journal L'Épervier
+    logo: /images/references/epervier.jpg
+    ordre: 9
+  - nom: Complexe scolaire FONAMCO
+    logo: /images/references/fonamco.jpg
+    ordre: 10

@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/Base.astro';
+import Bouton from '../../components/Bouton.astro';
+import Icone from '../../components/Icone.astro';
+import Demande from '../../components/sections/Demande.astro';
+import { getCollection, render } from 'astro:content';
+import { lien, PUBLICS } from '../../lib/contenu';
+export async function getStaticPaths() {
+  const liste = await getCollection('services', s => s.data.en_ligne);
+  return liste.map(s => ({ params: { service: s.id }, props: { s } }));
+}
+const { s } = Astro.props;
+const d = s.data;
+const { Content } = await render(s);
+const campagnes = await getCollection('campagnes', c => c.data.en_ligne);
+const offre = d.campagne ? (campagnes.find(c => c.id === d.campagne) ? `/offres/${d.campagne}/` : d.campagne) : '';
+---
+<Base titre={d.titre} description={d.accroche || d.resume}>
+  <section class={`section accroche fond-nuit sombre ${d.image ? '' : 'sans-image'}`}>
+    <div class="contenu">
+      <div class="grille">
+        <div>
+          <p class="fil"><a href={lien('/services/')}>Nos services</a> › {d.titre}</p>
+          {d.publics.length > 0 && <ul class="publics-tags">{d.publics.map(p => <li>{PUBLICS[p] || p}</li>)}</ul>}
+          <h1>{d.titre}</h1>
+          {d.accroche && <p class="chapo">{d.accroche}</p>}
+          <div class="actions">
+            <Bouton texte="Demander un diagnostic" href="#demande" />
+            {offre && <a class="lien" href={lien(offre)}>Voir l'offre complète<Icone nom="fleche" /></a>}
+          </div>
+        </div>
+        {d.image && <div class="visuel"><img src={lien(d.image)} alt="" fetchpriority="high"></div>}
+      </div>
+    </div>
+  </section>
+  <section class="section fond-blanc">
+    <div class="contenu etroit">
+      {d.points.length > 0 && <ul class="liste-coches rv" style="margin-bottom:32px">{d.points.map(p => <li>{p}</li>)}</ul>}
+      <div class="texte-riche rv"><Content /></div>
+    </div>
+  </section>
+  <Demande s={{ titre: 'Parlons de votre besoin.', texte: 'ZTi vous recontacte au moment choisi.', sujet: d.titre, besoins: [d.titre] }} page={`services/${s.id}`} campagne="" />
+</Base>

@@ -1,0 +1,50 @@
+---
+// Calculateur du coût réel d'un poste (formule de l'offre ZTi : prix d'achat ÷ mois d'utilisation),
+// et, si demandé, la rentabilité de la maintenance avec la grille du pack choisi (jamais affichée en tableau).
+import Cadre from './Cadre.astro';
+const { s, premier = false } = Astro.props as { s: any; premier?: boolean };
+const prix = Number(s.prix_defaut) || 45000;
+const postes = Number(s.postes_defaut) || 16;
+const grille = (s.grille || []).filter((g: any) => Number(g.prix) > 0)
+  .map((g: any) => [g.jusqu_a ? Number(g.jusqu_a) : 1e9, Number(g.prix)]);
+---
+<Cadre premier={premier} s={s} defaut="nuit" id={s.ancre || 'cout-reel'}>
+  <div class="calcul rv" data-calculateur data-grille={JSON.stringify(grille)}>
+    <div class="formulaire champs">
+      <div class="champ">
+        <label for="calc-prix">Prix d'achat d'un ordinateur (F CFA)</label>
+        <input id="calc-prix" inputmode="numeric" autocomplete="off" value={prix.toLocaleString('fr-FR').replace(/ | /g, ' ')} data-calc="prix">
+      </div>
+      <div class="champ">
+        <label for="calc-postes">Nombre d'ordinateurs</label>
+        <input id="calc-postes" inputmode="numeric" autocomplete="off" value={postes} data-calc="postes">
+      </div>
+      <p class="mention" style="margin:0">Coût mensuel = prix d'achat ÷ nombre de mois d'utilisation · Coût annuel = coût mensuel × 12</p>
+    </div>
+    <div class="resultats">
+      <div class="bloc">
+        <h3>Un ordinateur</h3>
+        <div class="ligne"><span>Utilisé 2 ans</span><b><span data-out="m24"></span> F CFA / mois</b></div>
+        <div class="ligne"><span></span><b><span data-out="a24"></span> F CFA / an</b></div>
+        <div class="ligne"><span>Utilisé 3 ans</span><b><span data-out="m36"></span> F CFA / mois</b></div>
+        <div class="ligne"><span></span><b><span data-out="a36"></span> F CFA / an</b></div>
+        <p class="gain">De 2 à 3 ans d'utilisation : <span data-out="g1"></span> F CFA de moins par an et par ordinateur.</p>
+      </div>
+      <div class="bloc">
+        <h3><span data-out="n"></span> ordinateurs · <span data-out="total"></span> F CFA</h3>
+        <div class="ligne"><span>Sur 2 ans</span><b><span data-out="sa24"></span> F CFA / an</b></div>
+        <div class="ligne"><span>Sur 3 ans</span><b><span data-out="sa36"></span> F CFA / an</b></div>
+        <p class="gain">Économie : <span data-out="g2"></span> F CFA par an.</p>
+      </div>
+      {grille.length > 0 && (
+        <div class="bloc">
+          <h3>{s.titre_rentabilite || 'La maintenance est-elle rentable ?'}</h3>
+          <div class="ligne"><span>{s.nom_pack || 'Pack'}, par poste</span><b><span data-out="pp"></span> F CFA</b></div>
+          <div class="ligne"><span>Pour l'ensemble des postes</span><b><span data-out="ps"></span> F CFA</b></div>
+          <p class="gain">L'entretien est remboursé après <span data-out="mois"></span> mois d'utilisation supplémentaire.</p>
+        </div>
+      )}
+      {s.mention && <p class="mention">{s.mention}</p>}
+    </div>
+  </div>
+</Cadre>

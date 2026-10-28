@@ -1,0 +1,21 @@
+---
+// Enveloppe commune d'une section : fond, petit titre, titre, texte d'introduction.
+import { md } from '../../lib/contenu';
+interface Props { s: any; defaut?: string; classe?: string; id?: string; centre?: boolean; premier?: boolean }
+const { s, defaut = 'blanc', classe = '', id, centre = false, premier = false } = Astro.props;
+const Titre = premier ? 'h1' : 'h2';
+const fond = s.fond || defaut;
+const sombre = ['nuit', 'bleu', 'noir'].includes(fond);
+---
+<section class={`section fond-${fond} ${sombre ? 'sombre' : ''} ${classe}`} id={id || s.ancre || undefined}>
+  <div class={`contenu ${centre ? 'centre' : ''}`}>
+    {(s.etiquette || s.titre || s.texte) && (
+      <div class="rv">
+        {s.etiquette && <span class="etiquette">{s.etiquette}</span>}
+        {s.titre && <Titre>{s.titre}</Titre>}
+        {s.texte && <div class="chapo texte-riche" set:html={md(s.texte)} />}
+      </div>
+    )}
+    <slot />
+  </div>
+</section>

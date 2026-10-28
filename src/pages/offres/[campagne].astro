@@ -1,0 +1,14 @@
+---
+// Pages de campagne : contenu/campagnes/<nom>.md → /offres/<nom>/ (lien à mettre dans les publicités)
+import Base from '../../layouts/Base.astro';
+import Sections from '../../components/Sections.astro';
+import { getCollection } from 'astro:content';
+export async function getStaticPaths() {
+  const liste = await getCollection('campagnes', c => c.data.en_ligne);
+  return liste.map(c => ({ params: { campagne: c.id }, props: { c } }));
+}
+const { c } = Astro.props;
+---
+<Base titre={c.data.titre} description={c.data.description} image={c.data.image_partage} sansMenu={c.data.sans_menu}>
+  <Sections sections={c.data.sections} page={`offres/${c.id}`} campagne={c.id} />
+</Base>

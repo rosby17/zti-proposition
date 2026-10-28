@@ -1,0 +1,97 @@
+---
+// Formulaire de demande : chaque demande part dans le Google Sheet de ZTi (et par e-mail),
+// avec la page, la campagne et la source de la publicité. Aucun contrôle natif : choix en boutons, case maison.
+import Cadre from './Cadre.astro';
+import Icone from '../Icone.astro';
+import { reglages, services, lien } from '../../lib/contenu';
+const { s, premier = false, page, campagne } = Astro.props as { s: any; premier?: boolean; page: string; campagne: string };
+const r = await reglages();
+const profils = [
+  ['ecole', 'Établissement scolaire'], ['entreprise', 'Entreprise'], ['institution', 'Institution'], ['particulier', 'Particulier'],
+];
+const besoins: string[] = s.besoins?.length ? s.besoins : (await services()).map(x => x.data.titre);
+const moments = ['Matin', 'Midi', 'Après-midi', 'Soir'];
+const id = s.ancre || 'demande';
+---
+<Cadre premier={premier} s={s} defaut="bleu" id={id}>
+  <div class="demande">
+    <div class="grille" style="margin-top:8px">
+      <div class="rv">
+        {s.garanties?.length > 0 && <ul class="liste-coches">{s.garanties.map((g: string) => <li>{g}</li>)}</ul>}
+        {s.mention && <p class="mention" style="margin-top:18px">{s.mention}</p>}
+      </div>
+      <form class="formulaire rv" novalidate data-demande
+        data-endpoint={(r.mesures?.endpoint || '').trim()} data-wa={r.contact.whatsapp} data-mail={r.contact.email}
+        data-merci={lien('/merci/')} data-page={page} data-campagne={campagne} data-sujet={s.sujet || 'Demande'}>
+        <div class="champ" data-champ="profil">
+          <span class="titre-champ" id={`${id}-profil`}>Vous êtes</span>
+          <div class="choix" role="radiogroup" aria-labelledby={`${id}-profil`} data-choix="profil" data-unique>
+            {profils.map(([v, t]) => <button type="button" role="radio" aria-checked={s.profil === v ? 'true' : 'false'} data-valeur={v}>{t}</button>)}
+          </div>
+          <span class="erreur">Choisissez une réponse.</span>
+        </div>
+        <div class="champ" data-champ="organisation">
+          <label for={`${id}-organisation`}>Nom de l'établissement ou de l'entreprise</label>
+          <input id={`${id}-organisation`} name="organisation" autocomplete="organization" maxlength="120">
+          <span class="erreur">Indiquez le nom de votre établissement ou de votre entreprise.</span>
+        </div>
+        <div class="deux">
+          <div class="champ" data-champ="nom">
+            <label for={`${id}-nom`}>Nom et prénom</label>
+            <input id={`${id}-nom`} name="nom" autocomplete="name" maxlength="80" required>
+            <span class="erreur">Indiquez votre nom.</span>
+          </div>
+          <div class="champ" data-champ="fonction">
+            <label for={`${id}-fonction`}>Fonction <span class="facultatif">(facultatif)</span></label>
+            <input id={`${id}-fonction`} name="fonction" autocomplete="organization-title" maxlength="80">
+          </div>
+        </div>
+        <div class="deux">
+          <div class="champ" data-champ="tel">
+            <label for={`${id}-tel`}>Téléphone / WhatsApp</label>
+            <div class="telephone"><span>+237</span><input id={`${id}-tel`} name="tel" inputmode="tel" autocomplete="tel-national" maxlength="12" placeholder="6XX XX XX XX" required></div>
+            <span class="erreur">9 chiffres, en commençant par 6.</span>
+          </div>
+          <div class="champ" data-champ="email">
+            <label for={`${id}-email`}>E-mail <span class="facultatif">(facultatif)</span></label>
+            <input id={`${id}-email`} name="email" type="email" autocomplete="email" maxlength="120">
+            <span class="erreur">Cette adresse e-mail n'est pas valide.</span>
+          </div>
+        </div>
+        <div class="champ" data-champ="lieu">
+          <label for={`${id}-lieu`}>Quartier et ville <span class="facultatif">(facultatif)</span></label>
+          <input id={`${id}-lieu`} name="lieu" autocomplete="address-level2" maxlength="120" placeholder="Par exemple : Messassi, Yaoundé">
+        </div>
+        {besoins.length > 0 && (
+          <div class="champ" data-champ="besoins">
+            <span class="titre-champ" id={`${id}-besoins`}>Votre besoin <span class="facultatif">(plusieurs choix possibles)</span></span>
+            <div class="choix" role="group" aria-labelledby={`${id}-besoins`} data-choix="besoins">
+              {besoins.map(b => <button type="button" aria-pressed="false" data-valeur={b}>{b}</button>)}
+            </div>
+          </div>
+        )}
+        <div class="champ" data-champ="message">
+          <label for={`${id}-message`}>Votre message <span class="facultatif">(facultatif)</span></label>
+          <textarea id={`${id}-message`} name="message" maxlength="1500"></textarea>
+        </div>
+        <div class="champ" data-champ="moment">
+          <span class="titre-champ" id={`${id}-moment`}>Meilleur moment pour vous rappeler <span class="facultatif">(facultatif)</span></span>
+          <div class="choix" role="radiogroup" aria-labelledby={`${id}-moment`} data-choix="moment" data-unique>
+            {moments.map(m => <button type="button" role="radio" aria-checked="false" data-valeur={m}>{m}</button>)}
+          </div>
+        </div>
+        <div class="piege" aria-hidden="true"><label>Ne pas remplir<input name="site_web" tabindex="-1" autocomplete="off"></label></div>
+        <div class="champ" data-champ="accord">
+          <button type="button" class="case" role="checkbox" aria-checked="false" data-case="accord">
+            <span class="boite"><Icone nom="coche" /></span>
+            <span>J'accepte que ZTi utilise ces informations uniquement pour me recontacter au sujet de ma demande. Elles ne sont ni communiquées ni cédées à des tiers (loi n° 2024/017).</span>
+          </button>
+          <span class="erreur">Votre accord est nécessaire pour que ZTi puisse vous recontacter.</span>
+        </div>
+        {s.garanties_bouton?.length > 0 && <div class="garanties">{s.garanties_bouton.map((g: string) => <span>{g}</span>)}</div>}
+        <p class="message-erreur" role="alert" hidden></p>
+        <div><button class="btn" type="submit">{s.bouton || 'Envoyer ma demande'}<span class="pastille"><Icone nom="fleche" /></span></button></div>
+      </form>
+    </div>
+  </div>
+</Cadre>

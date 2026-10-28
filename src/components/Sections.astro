@@ -1,0 +1,25 @@
+---
+// Affiche les sections d'une page (blocs de Pages CMS), dans l'ordre choisi par l'équipe ZTi.
+import Accroche from './sections/Accroche.astro';
+import TexteImage from './sections/TexteImage.astro';
+import Cartes from './sections/Cartes.astro';
+import ListeServices from './sections/ListeServices.astro';
+import Calculateur from './sections/Calculateur.astro';
+import Packs from './sections/Packs.astro';
+import Preuve from './sections/Preuve.astro';
+import References from './sections/References.astro';
+import Questions from './sections/Questions.astro';
+import Signature from './sections/Signature.astro';
+import Appel from './sections/Appel.astro';
+import Demande from './sections/Demande.astro';
+
+const { sections = [], page = '', campagne = '' } = Astro.props as { sections: any[]; page?: string; campagne?: string };
+const composants: Record<string, any> = {
+  accroche: Accroche, texte_image: TexteImage, cartes: Cartes, services: ListeServices, calculateur: Calculateur,
+  packs: Packs, preuve: Preuve, references: References, questions: Questions, signature: Signature, appel: Appel, demande: Demande,
+};
+---
+{sections.map((s, i) => {
+  const C = composants[s.type];
+  return C ? <C s={s} premier={i === 0} page={page} campagne={campagne} /> : null;
+})}

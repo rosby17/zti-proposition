@@ -1,0 +1,14 @@
+---
+// Pages simples éditables (À propos, Contact, Politique de confidentialité…) : contenu/pages/<nom>.md
+import Base from '../layouts/Base.astro';
+import Sections from '../components/Sections.astro';
+import { getCollection } from 'astro:content';
+export async function getStaticPaths() {
+  const pages = await getCollection('pages', p => p.id !== 'accueil');
+  return pages.map(p => ({ params: { page: p.id }, props: { p } }));
+}
+const { p } = Astro.props;
+---
+<Base titre={p.data.titre} description={p.data.description} image={p.data.image_partage}>
+  <Sections sections={p.data.sections} page={p.id} />
+</Base>

@@ -1,0 +1,43 @@
+---
+import { reglages, services, lien } from '../lib/contenu';
+const { sansMenu = false } = Astro.props as { sansMenu?: boolean };
+const r = await reglages();
+const liste = await services();
+const reseaux = (r.reseaux || []).filter(x => x.nom && x.adresse);
+const annee = new Date().getFullYear();
+---
+<footer class="pied">
+  <div class="contenu">
+    <div class="colonnes">
+      <div class="marque">
+        <img src={lien('/images/logo-blanc.png')} alt={r.nom} width="68" height="44" loading="lazy">
+        <p>{r.signature}<br>Depuis {r.depuis}</p>
+        <p>« {r.slogan} »</p>
+      </div>
+      <div>
+        <h4>Nos services</h4>
+        <ul>{liste.map(s => <li><a href={lien(`/services/${s.id}/`)}>{s.data.titre}</a></li>)}</ul>
+      </div>
+      <div>
+        <h4>ZTi</h4>
+        <ul>
+          {!sansMenu && r.menu.map(m => <li><a href={lien(m.lien)}>{m.texte}</a></li>)}
+          {sansMenu && <li><a href={lien('/')}>Découvrir ZTi</a></li>}
+          {reseaux.map(x => <li><a href={x.adresse} rel="noopener" target="_blank">{x.nom}</a></li>)}
+        </ul>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <ul>
+          {r.contact.email && <li><a href={`mailto:${r.contact.email}`}>{r.contact.email}</a></li>}
+          {r.contact.adresse && <li>{r.contact.adresse}</li>}
+          {r.contact.horaires && <li>{r.contact.horaires}</li>}
+        </ul>
+      </div>
+    </div>
+    <div class="bas">
+      <span>© {annee} {r.nom_legal}. Tous droits réservés.</span>
+      <a href={lien('/confidentialite/')}>Politique de confidentialité</a>
+    </div>
+  </div>
+</footer>

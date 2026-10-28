@@ -1,0 +1,23 @@
+---
+import Cadre from './Cadre.astro';
+import Icone from '../Icone.astro';
+import { md, lien } from '../../lib/contenu';
+const { s, premier = false } = Astro.props as { s: any; premier?: boolean };
+const cartes = (s.cartes || []).filter((c: any) => c.titre);
+---
+<Cadre premier={premier} s={s} defaut="ivoire">
+  <div class={`grille-cartes n${cartes.length}`}>
+    {cartes.map((c: any, i: number) => {
+      const corps = (
+        <>
+          {c.image && <div class="image"><img src={lien(c.image)} alt="" loading="lazy"></div>}
+          {s.numeroter && <span class="numero">{String(i + 1).padStart(2, '0')}</span>}
+          <h3>{c.titre}</h3>
+          {c.texte && <div class="texte-riche" set:html={md(c.texte)} />}
+          {c.lien && <span class="plus">{c.lien_texte || 'En savoir plus'}<Icone nom="fleche" /></span>}
+        </>
+      );
+      return c.lien ? <a class="carte rv" href={lien(c.lien)}>{corps}</a> : <div class="carte rv">{corps}</div>;
+    })}
+  </div>
+</Cadre>

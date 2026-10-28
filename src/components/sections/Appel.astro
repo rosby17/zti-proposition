@@ -1,0 +1,8 @@
+---
+import Cadre from './Cadre.astro';
+import Bouton from '../Bouton.astro';
+const { s, premier = false } = Astro.props as { s: any; premier?: boolean };
+---
+<Cadre premier={premier} s={s} defaut="bleu" centre>
+  {s.bouton?.texte && <div class="actions rv" style="justify-content:center"><Bouton texte={s.bouton.texte} href={s.bouton.lien || '#demande'} /></div>}
+</Cadre>

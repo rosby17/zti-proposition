@@ -1,0 +1,396 @@
+# Back-office du site ZTi (Pages CMS : https://app.pagescms.org, connexion avec le compte GitHub de ZTi).
+# Chaque enregistrement modifie les fichiers de contenu/ et remet le site en ligne en 1 à 2 minutes.
+media:
+  input: public/images
+  output: /images
+  rename: safe
+  categories: [image]
+
+components:
+  fond:
+    type: select
+    label: Fond de la section
+    description: "Couleurs de la charte ZTi : bleu nuit, bleu du logo, noir, blanc, ivoire, blanc cassé."
+    options:
+      values:
+        - name: nuit
+          label: Bleu nuit
+        - name: bleu
+          label: Bleu du logo
+        - name: noir
+          label: Noir
+        - name: blanc
+          label: Blanc
+        - name: ivoire
+          label: Ivoire
+        - name: pale
+          label: Blanc cassé
+  ancre:
+    type: string
+    label: Nom d'ancre (facultatif)
+    description: "Pour faire un lien vers cette section, par exemple « demande » → lien « #demande »."
+    pattern:
+      regex: "^[a-z0-9-]*$"
+      message: "Lettres minuscules, chiffres et tirets seulement."
+  bouton:
+    type: object
+    label: Bouton
+    fields:
+      - name: texte
+        type: string
+        label: Texte du bouton
+      - name: lien
+        type: string
+        label: Lien
+        description: "Une page (/contact/), une section de la page (#demande) ou une adresse complète."
+  texte:
+    type: rich-text
+    label: Texte
+    options:
+      switcher: false
+  sections:
+    type: block
+    label: Sections de la page
+    description: Ajoutez, déplacez ou supprimez des sections. Elles s'affichent dans cet ordre.
+    list:
+      collapsible: true
+    blockKey: type
+    blocks:
+      - name: accroche
+        label: Accroche (premier écran)
+        fields:
+          - { name: fond, component: fond }
+          - { name: ancre, component: ancre }
+          - { name: pastilles, type: string, list: true, label: Pastilles au-dessus du titre }
+          - { name: titre, type: string, label: Titre, required: true }
+          - { name: accent, type: string, label: Mots du titre à mettre en couleur, description: Recopiez exactement une partie du titre. }
+          - { name: texte, component: texte }
+          - { name: bouton, component: bouton }
+          - { name: lien_secondaire, component: bouton, label: Lien secondaire }
+          - { name: sous_bouton, type: string, label: Petite phrase sous le bouton }
+          - { name: image, type: image, label: Image }
+          - name: cadrage
+            type: select
+            label: Cadrage de l'image
+            options:
+              values:
+                - { name: centre, label: Centre }
+                - { name: gauche, label: Gauche }
+                - { name: droite, label: Droite }
+          - { name: bas, type: string, label: Phrase en bas de l'écran }
+      - name: texte_image
+        label: Texte et image
+        fields:
+          - { name: fond, component: fond }
+          - { name: ancre, component: ancre }
+          - { name: etiquette, type: string, label: Petit titre }
+          - { name: titre, type: string, label: Titre }
+          - { name: texte, component: texte }
+          - { name: points, type: string, list: true, label: Points cochés }
+          - { name: mention, type: string, label: Mention en italique }
+          - { name: image, type: image, label: Image (facultative) }
+          - name: image_position
+            type: select
+            label: Place de l'image
+            options:
+              values:
+                - { name: droite, label: À droite }
+                - { name: gauche, label: À gauche }
+          - { name: bouton, component: bouton }
+      - name: cartes
+        label: Cartes (avantages, étapes, publics…)
+        fields:
+          - { name: fond, component: fond }
+          - { name: ancre, component: ancre }
+          - { name: etiquette, type: string, label: Petit titre }
+          - { name: titre, type: string, label: Titre }
+          - { name: texte, component: texte }
+          - { name: numeroter, type: boolean, label: Numéroter les cartes (01, 02…) }
+          - name: cartes
+            type: object
+            list: true
+            label: Cartes
+            fields:
+              - { name: titre, type: string, label: Titre, required: true }
+              - { name: texte, type: text, label: Texte }
+              - { name: image, type: image, label: Image (facultative) }
+              - { name: lien, type: string, label: Lien (facultatif) }
+              - { name: lien_texte, type: string, label: Texte du lien, description: "Par défaut : « En savoir plus »." }
+      - name: services
+        label: Liste des services
+        fields:
+          - { name: fond, component: fond }
+          - { name: ancre, component: ancre }
+          - { name: etiquette, type: string, label: Petit titre }
+          - { name: titre, type: string, label: Titre }
+          - { name: texte, component: texte }
+          - name: public
+            type: select
+            label: Seulement les services pour…
+            description: Laisser vide pour afficher tous les services en ligne.
+            options:
+              values:
+                - { name: ecoles, label: Écoles }
+                - { name: entreprises, label: Entreprises }
+                - { name: institutions, label: Institutions }
+                - { name: particuliers, label: Particuliers }
+      - name: calculateur
+        label: Calculateur du coût réel d'un poste
+        fields:
+          - { name: fond, component: fond }
+          - { name: ancre, component: ancre }
+          - { name: etiquette, type: string, label: Petit titre }
+          - { name: titre, type: string, label: Titre }
+          - { name: texte, component: texte }
+          - { name: prix_defaut, type: number, label: Prix d'achat proposé (F CFA) }
+          - { name: postes_defaut, type: number, label: Nombre d'ordinateurs proposé }
+          - { name: titre_rentabilite, type: string, label: Titre du bloc rentabilité }
+          - { name: nom_pack, type: string, label: Nom du pack utilisé pour le calcul }
+          - name: grille
+            type: object
+            list: true
+            label: Grille du pack (jamais affichée en tableau)
+            description: "Prix HT par poste selon le nombre de postes. À mettre à jour à chaque année scolaire. Dernière ligne : laisser « Jusqu'à » vide. Grille vide = pas de bloc rentabilité."
+            fields:
+              - { name: jusqu_a, type: number, label: "Jusqu'à (postes)" }
+              - { name: prix, type: number, label: Prix par poste (F CFA HT) }
+          - { name: mention, type: text, label: Mention sous le calcul }
+      - name: packs
+        label: Packs
+        fields:
+          - { name: fond, component: fond }
+          - { name: ancre, component: ancre }
+          - { name: etiquette, type: string, label: Petit titre }
+          - { name: titre, type: string, label: Titre }
+          - { name: texte, component: texte }
+          - name: packs
+            type: object
+            list: true
+            label: Packs
+            fields:
+              - { name: nom, type: string, label: Nom, required: true }
+              - { name: badge, type: string, label: Badge (facultatif) }
+              - { name: promesse, type: string, label: Promesse }
+              - { name: points, type: string, list: true, label: Ce qui est compris }
+              - { name: delai, type: string, label: Prise en charge }
+          - { name: compris_titre, type: string, label: Titre de l'encadré commun }
+          - { name: compris, type: string, list: true, label: Compris dans tous les packs }
+      - name: preuve
+        label: Preuve (fondateur et attestations)
+        fields:
+          - { name: fond, component: fond }
+          - { name: ancre, component: ancre }
+          - { name: etiquette, type: string, label: Petit titre }
+          - { name: titre, type: string, label: Titre }
+          - { name: texte, component: texte }
+          - { name: portrait, type: image, label: Photo }
+          - { name: nom, type: string, label: Nom }
+          - { name: fonction, type: text, label: Fonction }
+          - name: attestations
+            type: object
+            list: true
+            label: Attestations
+            description: Uniquement les copies filigranées « Confidentiel ».
+            fields:
+              - { name: image, type: image, label: Copie filigranée }
+              - { name: titre, type: string, label: Organisme }
+              - { name: detail, type: string, label: Détail }
+          - { name: mention, type: text, label: Mention }
+      - name: references
+        label: Références (logos des clients)
+        fields:
+          - { name: fond, component: fond }
+          - { name: ancre, component: ancre }
+          - { name: etiquette, type: string, label: Petit titre }
+          - { name: titre, type: string, label: Titre }
+          - { name: texte, component: texte }
+      - name: questions
+        label: Questions fréquentes
+        fields:
+          - { name: fond, component: fond }
+          - { name: ancre, component: ancre }
+          - { name: etiquette, type: string, label: Petit titre }
+          - { name: titre, type: string, label: Titre }
+          - { name: texte, component: texte }
+          - name: questions
+            type: object
+            list: true
+            label: Questions
+            fields:
+              - { name: question, type: string, label: Question, required: true }
+              - { name: reponse, type: text, label: Réponse }
+      - name: demande
+        label: Formulaire de demande
+        fields:
+          - { name: fond, component: fond }
+          - { name: ancre, component: ancre, description: "Laissez « demande » : les boutons « #demande » mènent ici." }
+          - { name: etiquette, type: string, label: Petit titre }
+          - { name: titre, type: string, label: Titre }
+          - { name: texte, component: texte }
+          - { name: sujet, type: string, label: Sujet de la demande, description: "Apparaît dans le tableau des demandes et dans le message WhatsApp. Exemple : Diagnostic offert (écoles)." }
+          - name: profil
+            type: select
+            label: Profil choisi d'avance
+            options:
+              values:
+                - { name: ecole, label: Établissement scolaire }
+                - { name: entreprise, label: Entreprise }
+                - { name: institution, label: Institution }
+                - { name: particulier, label: Particulier }
+          - { name: besoins, type: string, list: true, label: Besoins proposés, description: "Vide = la liste des services." }
+          - { name: garanties, type: string, list: true, label: Points cochés à côté du formulaire }
+          - { name: garanties_bouton, type: string, list: true, label: Garanties au-dessus du bouton }
+          - { name: bouton, type: string, label: Texte du bouton }
+          - { name: mention, type: string, label: Mention }
+      - name: signature
+        label: Signature ZTi (logo et slogan)
+        fields:
+          - { name: fond, component: fond }
+          - { name: titre, type: string, label: Titre }
+          - { name: slogan, type: string, label: Slogan }
+      - name: appel
+        label: Bandeau avec bouton
+        fields:
+          - { name: fond, component: fond }
+          - { name: etiquette, type: string, label: Petit titre }
+          - { name: titre, type: string, label: Titre }
+          - { name: texte, component: texte }
+          - { name: bouton, component: bouton }
+
+content:
+  - name: campagnes
+    label: Pages de campagne
+    type: collection
+    path: contenu/campagnes
+    format: yaml-frontmatter
+    filename:
+      template: "{primary}.md"
+      field: create
+    view:
+      fields: [titre, en_ligne, public]
+      primary: titre
+    fields:
+      - { name: titre, type: string, label: Titre de la page, required: true }
+      - { name: description, type: text, label: Description (Google, Facebook, WhatsApp) }
+      - { name: en_ligne, type: boolean, label: En ligne, description: "Décoché = brouillon, invisible sur le site. Adresse : /offres/<nom du fichier>/" }
+      - name: public
+        type: select
+        label: Public visé
+        options:
+          values:
+            - { name: ecoles, label: Écoles }
+            - { name: entreprises, label: Entreprises }
+            - { name: institutions, label: Institutions }
+            - { name: particuliers, label: Particuliers }
+      - { name: sans_menu, type: boolean, label: Sans menu (le visiteur reste sur l'offre), default: true }
+      - { name: image_partage, type: image, label: Image d'aperçu du lien (1200 × 630) }
+      - { name: sections, component: sections }
+
+  - name: pages
+    label: Pages du site
+    type: collection
+    path: contenu/pages
+    format: yaml-frontmatter
+    operations:
+      delete: false
+    view:
+      fields: [titre]
+      primary: titre
+    fields:
+      - { name: titre, type: string, label: Titre, required: true }
+      - { name: description, type: text, label: Description (Google, Facebook, WhatsApp) }
+      - { name: image_partage, type: image, label: Image d'aperçu du lien (1200 × 630) }
+      - { name: sections, component: sections }
+
+  - name: services
+    label: Services
+    type: collection
+    path: contenu/services
+    format: yaml-frontmatter
+    filename:
+      template: "{primary}.md"
+      field: create
+    view:
+      fields: [titre, en_ligne, ordre]
+      primary: titre
+      default:
+        sort: ordre
+        order: asc
+    fields:
+      - { name: titre, type: string, label: Nom du service, required: true }
+      - { name: accroche, type: string, label: Accroche }
+      - { name: resume, type: text, label: Résumé (carte de la liste des services) }
+      - { name: image, type: image, label: Image }
+      - name: publics
+        type: select
+        label: Publics
+        options:
+          multiple: true
+          values:
+            - { name: ecoles, label: Écoles }
+            - { name: entreprises, label: Entreprises }
+            - { name: institutions, label: Institutions }
+            - { name: particuliers, label: Particuliers }
+      - { name: points, type: string, list: true, label: Points cochés }
+      - { name: campagne, type: string, label: Page de campagne liée, description: "Nom du fichier de la campagne, par exemple diagnostic-ecoles." }
+      - { name: ordre, type: number, label: Ordre d'affichage }
+      - { name: en_ligne, type: boolean, label: En ligne }
+      - { name: body, type: rich-text, label: Présentation du service }
+
+  - name: reglages
+    label: Réglages du site
+    type: file
+    path: contenu/reglages/site.yml
+    format: yaml
+    fields:
+      - { name: nom, type: string, label: Nom affiché }
+      - { name: nom_legal, type: string, label: Nom légal (pied de page) }
+      - { name: slogan, type: string, label: Slogan }
+      - { name: signature, type: string, label: Signature sous le logo }
+      - { name: depuis, type: string, label: Depuis (année) }
+      - { name: description, type: text, label: Description du site (Google) }
+      - name: contact
+        type: object
+        label: Contacts
+        fields:
+          - { name: email, type: string, label: E-mail (affiché et reçoit les demandes par e-mail) }
+          - { name: whatsapp, type: string, label: "WhatsApp (chiffres seulement, avec 237), proposé après l'envoi du formulaire" }
+          - { name: telephone, type: string, label: Téléphone (non affiché pour l'instant) }
+          - { name: adresse, type: string, label: Adresse }
+          - { name: horaires, type: string, label: Horaires de réponse }
+      - name: reseaux
+        type: object
+        list: true
+        label: Réseaux sociaux (pied de page)
+        fields:
+          - { name: nom, type: string, label: Nom (Facebook, LinkedIn…) }
+          - { name: adresse, type: string, label: Adresse de la page }
+      - name: menu
+        type: object
+        list: true
+        label: Menu du haut
+        fields:
+          - { name: texte, type: string, label: Texte }
+          - { name: lien, type: string, label: Lien }
+      - { name: bouton_principal, component: bouton, label: Bouton du haut }
+      - name: mesures
+        type: object
+        label: Demandes et mesure d'audience
+        fields:
+          - { name: endpoint, type: string, label: Adresse du script Google (…/exec), description: "Les demandes arrivent dans le Google Sheet de ZTi. Vide = la demande part seulement par WhatsApp." }
+          - { name: pixel, type: string, label: Identifiant du pixel Meta, description: "Vide = aucun pixel chargé." }
+
+  - name: references
+    label: Références (logos des clients)
+    type: file
+    path: contenu/reglages/references.yml
+    format: yaml
+    fields:
+      - name: references
+        type: object
+        list: true
+        label: Références
+        fields:
+          - { name: nom, type: string, label: Nom, required: true }
+          - { name: logo, type: image, label: Logo, required: true }
+          - { name: ordre, type: number, label: Ordre }

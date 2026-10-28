@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import Icone from '../components/Icone.astro';
+import Bouton from '../components/Bouton.astro';
+import { reglages } from '../lib/contenu';
+const r = await reglages();
+---
+<Base titre="Merci" indexer={false}>
+  <section class="section fond-nuit sombre page-simple">
+    <div class="contenu etroit" data-merci-page>
+      <span class="etiquette">Votre demande</span>
+      <h1 data-titre>Merci de votre visite.</h1>
+      <p class="chapo" data-texte>Pour envoyer une demande à ZTi, remplissez le formulaire de la page de votre choix.</p>
+      <div class="actions" data-envoi hidden>
+        <a class="btn" data-wa hidden target="_blank" rel="noopener">Envoyer par WhatsApp<span class="pastille"><Icone nom="whatsapp" /></span></a>
+        <a class="btn" data-mail hidden>Envoyer par e-mail<span class="pastille"><Icone nom="mail" /></span></a>
+      </div>
+      <p class="mention" style="margin-top:24px">{r.contact.horaires}</p>
+      <div class="actions"><Bouton texte="Retour à l'accueil" href="/" /></div>
+    </div>
+  </section>
+</Base>

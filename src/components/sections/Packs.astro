@@ -1,0 +1,24 @@
+---
+import Cadre from './Cadre.astro';
+const { s, premier = false } = Astro.props as { s: any; premier?: boolean };
+const packs = (s.packs || []).filter((p: any) => p.nom);
+---
+<Cadre premier={premier} s={s} defaut="noir" id={s.ancre || 'packs'}>
+  <div class={`packs n${packs.length}`}>
+    {packs.map((p: any) => (
+      <article class="pack rv">
+        {p.badge && <span class="badge">{p.badge}</span>}
+        <h3>{p.nom}</h3>
+        {p.promesse && <p class="promesse">{p.promesse}</p>}
+        {p.points?.length > 0 && <ul class="liste-coches">{p.points.map((x: string) => <li>{x}</li>)}</ul>}
+        {p.delai && <p class="delai">{p.delai}</p>}
+      </article>
+    ))}
+  </div>
+  {s.compris?.length > 0 && (
+    <div class="compris rv">
+      <h3>{s.compris_titre || 'Compris dans tous les packs'}</h3>
+      <ul class="liste-coches">{s.compris.map((x: string) => <li>{x}</li>)}</ul>
+    </div>
+  )}
+</Cadre>

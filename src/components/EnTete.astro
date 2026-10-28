@@ -1,0 +1,29 @@
+---
+import Icone from './Icone.astro';
+import Bouton from './Bouton.astro';
+import { reglages, lien } from '../lib/contenu';
+const { sansMenu = false } = Astro.props as { sansMenu?: boolean };
+const r = await reglages();
+const ici = Astro.url.pathname;
+const actif = (l: string) => (l === '/' ? ici === lien('/') : ici.startsWith(lien(l)));
+---
+<header class={`entete ${sansMenu ? 'sans-menu' : ''}`}>
+  <div class="contenu">
+    <a class="marque" href={lien('/')} aria-label={`${r.nom}, accueil`}>
+      <img src={lien('/images/logo-blanc.png')} alt={r.nom} width="62" height="40">
+      <small>{r.signature}<br>Depuis {r.depuis}</small>
+    </a>
+    {!sansMenu && (
+      <>
+        <button class="menu-mobile" type="button" aria-expanded="false" aria-controls="menu-principal"><Icone nom="menu" />Menu</button>
+        <nav id="menu-principal" aria-label="Menu principal">
+          <ul>
+            {r.menu.map(m => <li><a href={lien(m.lien)} aria-current={actif(m.lien) ? 'page' : undefined}>{m.texte}</a></li>)}
+          </ul>
+          <Bouton texte={r.bouton_principal.texte} href={r.bouton_principal.lien} classe="btn-mobile" />
+        </nav>
+      </>
+    )}
+    <Bouton texte={r.bouton_principal.texte} href={sansMenu ? '#demande' : r.bouton_principal.lien} />
+  </div>
+</header>

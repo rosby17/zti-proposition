@@ -1,0 +1,6 @@
+---
+import Icone from './Icone.astro';
+import { lien } from '../lib/contenu';
+const { texte, href, classe = '' } = Astro.props as { texte: string; href: string; classe?: string };
+---
+<a class={`btn ${classe}`} href={lien(href)}>{texte}<span class="pastille"><Icone nom="fleche" /></span></a>
