@@ -17,7 +17,7 @@ reseaux:
     adresse: https://www.facebook.com/ztipro/
 communaute:
   facebook: "https://www.facebook.com/ztipro/"
-  whatsapp: ""
+  whatsapp: "https://chat.whatsapp.com/JDiVs1GXfl2IwT0Ytou95G"
 menu:
   - texte: Accueil
     lien: /
