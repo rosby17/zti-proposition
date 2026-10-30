@@ -31,7 +31,8 @@ const pixel = (r.mesures?.pixel || '').trim();
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{titreComplet}</title>
   <meta name="description" content={desc}>
-  {!indexer && <meta name="robots" content="noindex">}
+  {/* proposition de design : jamais indexée par Google (copie de démonstration du site de ZTi) */}
+  <meta name="robots" content="noindex, nofollow">
   <link rel="canonical" href={adresse}>
   <link rel="icon" href={lien('/favicon.ico')} sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href={lien('/favicon-32.png')}>
