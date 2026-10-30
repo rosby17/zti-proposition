@@ -8,7 +8,9 @@ import '@fontsource/inter/500.css';
 import '@fontsource/inter/600.css';
 import '@fontsource/poppins/400.css';
 import '@fontsource/poppins/500.css';
+import '@fontsource/jetbrains-mono/500.css';
 import '../styles/zti.css';
+import '../styles/proposition.css';
 import EnTete from '../components/EnTete.astro';
 import PiedDePage from '../components/PiedDePage.astro';
 import { reglages, lien } from '../lib/contenu';
@@ -35,7 +37,7 @@ const pixel = (r.mesures?.pixel || '').trim();
   <link rel="icon" type="image/png" sizes="32x32" href={lien('/favicon-32.png')}>
   <link rel="apple-touch-icon" href={lien('/apple-touch-icon.png')}>
   <link rel="manifest" href={lien('/site.webmanifest')}>
-  <meta name="theme-color" content="#010038">
+  <meta name="theme-color" content="#F6F8FD">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fr_FR">
   <meta property="og:site_name" content={r.nom}>

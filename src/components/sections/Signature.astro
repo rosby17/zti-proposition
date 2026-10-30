@@ -2,7 +2,7 @@
 import { lien } from '../../lib/contenu';
 const { s } = Astro.props as { s: any };
 const fond = s.fond || 'blanc';
-const sombre = ['nuit', 'bleu', 'noir'].includes(fond);
+const sombre = ['noir'].includes(fond);
 ---
 <section class={`section signature fond-${fond} ${sombre ? 'sombre' : ''}`}>
   <div class="contenu rv">

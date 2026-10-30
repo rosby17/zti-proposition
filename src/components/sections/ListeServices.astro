@@ -7,9 +7,10 @@ const tous = await services();
 const liste = s.public ? tous.filter(x => x.data.publics.includes(s.public)) : tous;
 ---
 <Cadre premier={premier} s={s} defaut="blanc" id={s.ancre || 'services'}>
-  <div class={`grille-cartes n${liste.length}`}>
-    {liste.map(x => (
+  <div class={`grille-cartes dossiers n${liste.length}`}>
+    {liste.map((x, i) => (
       <a class="carte rv" href={lien(`/services/${x.id}/`)}>
+        <span class="onglet" aria-hidden="true">ZTi/{String(i + 1).padStart(2, '0')}</span>
         {x.data.image && <div class="image"><img src={lien(x.data.image)} alt="" loading="lazy"></div>}
         <h3>{x.data.titre}</h3>
         <p>{x.data.resume || x.data.accroche}</p>

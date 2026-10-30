@@ -4,7 +4,7 @@ import { md, lien } from '../../lib/contenu';
 const { s, premier = false } = Astro.props as { s: any; premier?: boolean };
 const Titre = premier ? 'h1' : 'h2';
 const fond = s.fond || 'blanc';
-const sombre = ['nuit', 'bleu', 'noir'].includes(fond);
+const sombre = ['noir'].includes(fond);
 ---
 <section class={`section texte-image fond-${fond} ${sombre ? 'sombre' : ''} ${s.image_position === 'gauche' ? 'image-gauche' : ''}`} id={s.ancre || undefined}>
   <div class="contenu">

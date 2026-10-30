@@ -16,7 +16,7 @@ const campagnes = await getCollection('campagnes', c => c.data.en_ligne);
 const offre = d.campagne ? (campagnes.find(c => c.id === d.campagne) ? `/offres/${d.campagne}/` : d.campagne) : '';
 ---
 <Base titre={d.titre} description={d.accroche || d.resume}>
-  <section class={`section accroche fond-nuit sombre ${d.image ? '' : 'sans-image'}`}>
+  <section class={`section accroche fond-nuit ${d.image ? '' : 'sans-image'}`}>
     <div class="contenu">
       <div class="grille">
         <div>
