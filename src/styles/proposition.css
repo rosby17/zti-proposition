@@ -204,3 +204,5 @@ a.carte:hover { transform: translateY(-4px); border-color: rgba(21,101,255,.35);
 .rv.vu { filter: none; }
 @media (prefers-reduced-motion: reduce) { .rv { filter: none; } .orbe, .puce, .point { animation: none; } }
 .sans-js .rv { filter: none; }
+/* écrans moyens : la sphère s'efface derrière le titre pour rester lisible */
+@media (max-width: 1100px) { .orbe { opacity: .3; filter: blur(2px) saturate(110%); } }
