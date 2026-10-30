@@ -19,13 +19,15 @@ Plan complet et étapes suivantes : [PLAN.md](PLAN.md).
 3. « Enregistrer » : le site se remet à jour tout seul en 1 à 2 minutes.
 
 Pour suivre une publicité : ajouter à la fin du lien `?utm_source=facebook&utm_campaign=<nom de la pub>`.
-Ces informations arrivent avec chaque demande dans le Google Sheet.
+Ces informations arrivent avec chaque demande dans le CRM Notion.
 
 ## Les demandes
 
-Chaque formulaire envoie la demande dans le Google Sheet de ZTi (onglet « Demandes du site », colonne « État » pour le suivi)
-et par e-mail à ZTi, avec la page, la campagne et la source de la publicité. Installation : en tête de
-[outils/google-apps-script.gs](outils/google-apps-script.gs), puis coller l'adresse « …/exec » dans **Réglages du site**.
+Le formulaire a deux étapes : la situation (nombre d'ordinateurs, urgence, prestataire, dépenses…, questions reprises de
+l'ancien formulaire Tally), puis les coordonnées. Chaque demande (et chaque avis) part dans le **CRM Notion** de ZTi, avec
+une copie de secours dans un Google Sheet et un e-mail à ZTi, avec la page, la campagne et la source de la publicité.
+Aucun outil intermédiaire : le relais est le script gratuit [outils/google-apps-script.gs](outils/google-apps-script.gs).
+Installation pas à pas : [outils/NOTION.md](outils/NOTION.md), puis coller l'adresse « …/exec » dans **Réglages du site**.
 Tant que cette adresse est vide, le visiteur voit « Dernière étape : envoyez votre demande à ZTi » et l'envoie par WhatsApp
 (le message est déjà rédigé).
 

@@ -15,13 +15,13 @@ sections:
       texte: Découvrir nos services
       lien: /services/
     sous_bouton: Offert · Sans engagement
-    image: /images/accueil-hero.webp
+    image: /images/service-outils.webp
     cadrage: droite
     bas: Votre outil informatique doit travailler pour vous, pas l'inverse.
   - type: cartes
     fond: ivoire
     etiquette: Pour qui
-    titre: Une offre pour chaque établissement.
+    titre: Une offre pour chacun.
     cartes:
       - titre: Écoles, collèges, lycées
         image: /images/public-ecoles.webp
@@ -61,7 +61,7 @@ sections:
         image: /images/ecoles-hero.webp
         texte: "Le diagnostic en main, vous choisissez le pack qui vous convient. Vous restez l'unique décideur."
       - titre: L'intervention
-        image: /images/demarrage.jpg
+        image: /images/accueil-hero.webp
         texte: "Prise en charge sous 48 h, 24 h ou en priorité selon le pack choisi."
       - titre: Le constat signé
         image: /images/methode-constat.webp
@@ -101,6 +101,12 @@ sections:
     etiquette: Nos références
     titre: Ils nous ont fait confiance.
     texte: Institutions, entreprises et établissements scolaires accompagnés par ZTi.
+  - type: avis
+    fond: pale
+    ancre: avis
+    etiquette: Avis
+    titre: Ce qu'en disent nos clients.
+    texte: "Vous avez travaillé avec ZTi ? Votre avis aide d'autres écoles et entreprises à choisir."
   - type: signature
     fond: blanc
     titre: Diagnostic, valorisation et préservation de votre investissement informatique

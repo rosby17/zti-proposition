@@ -1,0 +1,75 @@
+---
+// Avis des clients : les avis validés par ZTi (contenu/reglages/avis.yml, « Afficher sur le site ») et un formulaire
+// pour en laisser un. Chaque avis reçu part dans Notion (base « Avis clients ») et par e-mail ; rien n'est publié sans ZTi.
+import Cadre from './Cadre.astro';
+import Icone from '../Icone.astro';
+import { reglages, avis } from '../../lib/contenu';
+const { s, premier = false, page } = Astro.props as { s: any; premier?: boolean; page: string };
+const r = await reglages();
+const liste = await avis();
+const id = s.ancre || 'avis';
+const etoiles = (n: number) => '★★★★★'.slice(0, n) + '☆☆☆☆☆'.slice(0, 5 - n);
+---
+<Cadre premier={premier} s={s} defaut="pale" id={id}>
+  <div class="avis">
+    {liste.length > 0 && (
+      <div class="liste-avis">
+        {liste.map(a => (
+          <figure class="carte avis-carte rv">
+            <span class="etoiles" role="img" aria-label={`${a.note} sur 5`}>{etoiles(a.note)}</span>
+            <blockquote>{a.texte}</blockquote>
+            <figcaption><b>{a.nom}</b>{a.organisation && <span>{a.organisation}</span>}</figcaption>
+          </figure>
+        ))}
+      </div>
+    )}
+    <details class="donner-avis rv" open={liste.length === 0 ? true : undefined}>
+      <summary class="btn">Donner mon avis<span class="pastille"><Icone nom="plus" /></span></summary>
+      <form class="formulaire" novalidate data-avis data-endpoint={(r.mesures?.endpoint || '').trim()} data-wa={r.contact.whatsapp} data-page={page}>
+        <div class="champ" data-champ="note">
+          <span class="titre-champ" id={`${id}-note`}>Votre note</span>
+          <div class="choix etoiles-choix" role="radiogroup" aria-labelledby={`${id}-note`} data-choix="note" data-unique>
+            {[1, 2, 3, 4, 5].map(n => <button type="button" role="radio" aria-checked="false" data-valeur={n} aria-label={`${n} sur 5`}>★</button>)}
+          </div>
+          <span class="erreur">Choisissez une note.</span>
+        </div>
+        <div class="deux">
+          <div class="champ" data-champ="nom">
+            <label for={`${id}-nom`}>Nom et prénom</label>
+            <input id={`${id}-nom`} name="nom" autocomplete="name" maxlength="80" required>
+            <span class="erreur">Indiquez votre nom.</span>
+          </div>
+          <div class="champ" data-champ="organisation">
+            <label for={`${id}-organisation`}>Établissement, entreprise ou fonction <span class="facultatif">(facultatif)</span></label>
+            <input id={`${id}-organisation`} name="organisation" autocomplete="organization" maxlength="120">
+          </div>
+        </div>
+        <div class="champ" data-champ="texte">
+          <label for={`${id}-texte`}>Votre avis</label>
+          <textarea id={`${id}-texte`} name="texte" maxlength="800" required></textarea>
+          <span class="erreur">Écrivez quelques mots (au moins 10 caractères).</span>
+        </div>
+        <div class="champ" data-champ="tel">
+          <label for={`${id}-tel`}>Téléphone <span class="facultatif">(facultatif, jamais affiché : seulement si ZTi doit vous répondre)</span></label>
+          <input id={`${id}-tel`} name="tel" inputmode="tel" autocomplete="tel" maxlength="20">
+        </div>
+        <div class="piege" aria-hidden="true"><label>Ne pas remplir<input name="site_web" tabindex="-1" autocomplete="off"></label></div>
+        <div class="champ" data-champ="accord">
+          <button type="button" class="case" role="checkbox" aria-checked="false" data-case="accord">
+            <span class="boite"><Icone nom="coche" /></span>
+            <span>J'accepte que ZTi publie mon avis sur son site avec mon nom et, si je l'ai indiqué, mon établissement. Mon téléphone n'est jamais publié.</span>
+          </button>
+          <span class="erreur">Votre accord est nécessaire pour publier votre avis.</span>
+        </div>
+        <p class="message-erreur" role="alert" hidden></p>
+        <div><button class="btn" type="submit">Envoyer mon avis<span class="pastille"><Icone nom="fleche" /></span></button></div>
+        <p class="mention">Les avis sont relus par ZTi avant d'être affichés.</p>
+      </form>
+      <div class="avis-merci" role="status" hidden>
+        <h3>Merci pour votre avis.</h3>
+        <p data-texte>ZTi le relit et l'affiche sur le site dans les prochains jours.</p>
+        <a class="btn" data-wa hidden target="_blank" rel="noopener">Envoyer par WhatsApp<span class="pastille"><Icone nom="whatsapp" /></span></a>
+      </div>
+    </details>
+  </div>
+</Cadre>

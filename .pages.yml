@@ -219,6 +219,14 @@ components:
             fields:
               - { name: question, type: string, label: Question, required: true }
               - { name: reponse, type: text, label: Réponse }
+      - name: avis
+        label: Avis des clients
+        fields:
+          - { name: fond, component: fond }
+          - { name: ancre, component: ancre, description: "Laissez « avis » : le lien « Donner votre avis » du pied de page mène ici." }
+          - { name: etiquette, type: string, label: Petit titre }
+          - { name: titre, type: string, label: Titre }
+          - { name: texte, component: texte }
       - name: demande
         label: Formulaire de demande
         fields:
@@ -238,6 +246,7 @@ components:
                 - { name: institution, label: Institution }
                 - { name: particulier, label: Particulier }
           - { name: besoins, type: string, list: true, label: Besoins proposés, description: "Vide = la liste des services." }
+          - { name: court, type: boolean, label: Formulaire court (une seule étape), description: "Coché : seulement le profil, le besoin et les coordonnées. Décoché (conseillé) : deux étapes avec les questions sur la situation (nombre d'ordinateurs, urgence, prestataire, dépenses)." }
           - { name: garanties, type: string, list: true, label: Points cochés à côté du formulaire }
           - { name: garanties_bouton, type: string, list: true, label: Garanties au-dessus du bouton }
           - { name: bouton, type: string, label: Texte du bouton }
@@ -365,6 +374,12 @@ content:
         fields:
           - { name: nom, type: string, label: Nom (Facebook, LinkedIn…) }
           - { name: adresse, type: string, label: Adresse de la page }
+      - name: communaute
+        type: object
+        label: Communauté (proposée après l'envoi d'un formulaire)
+        fields:
+          - { name: facebook, type: string, label: Adresse du groupe ou de la page Facebook, description: "Vide = bouton non affiché." }
+          - { name: whatsapp, type: string, label: Lien d'invitation de la communauté ou de la chaîne WhatsApp, description: "Par exemple https://chat.whatsapp.com/… ou https://whatsapp.com/channel/… Vide = bouton non affiché." }
       - name: menu
         type: object
         list: true
@@ -377,7 +392,7 @@ content:
         type: object
         label: Demandes et mesure d'audience
         fields:
-          - { name: endpoint, type: string, label: Adresse du script Google (…/exec), description: "Les demandes arrivent dans le Google Sheet de ZTi. Vide = la demande part seulement par WhatsApp." }
+          - { name: endpoint, type: string, label: Adresse du script Google (…/exec), description: "Les demandes et les avis arrivent dans le CRM Notion de ZTi (copie dans le Google Sheet, et e-mail). Vide = la demande part seulement par WhatsApp." }
           - { name: pixel, type: string, label: Identifiant du pixel Meta, description: "Vide = aucun pixel chargé." }
 
   - name: references
@@ -394,3 +409,21 @@ content:
           - { name: nom, type: string, label: Nom, required: true }
           - { name: logo, type: image, label: Logo, required: true }
           - { name: ordre, type: number, label: Ordre }
+  - name: avis
+    label: Avis des clients
+    type: file
+    path: contenu/reglages/avis.yml
+    format: yaml
+    fields:
+      - name: avis
+        type: object
+        list: true
+        label: Avis
+        description: "Les avis reçus arrivent dans Notion (base « Avis clients ») et par e-mail. Recopiez ici ceux à publier."
+        fields:
+          - { name: nom, type: string, label: Nom, required: true }
+          - { name: organisation, type: string, label: "Établissement, entreprise ou fonction" }
+          - { name: note, type: number, label: Note (1 à 5), required: true }
+          - { name: texte, type: text, label: Avis, required: true }
+          - { name: date, type: date, label: Date }
+          - { name: afficher, type: boolean, label: Afficher sur le site, default: true }

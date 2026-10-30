@@ -12,7 +12,12 @@ contact:
   telephone: "+237 676 165 772"
   adresse: Yaoundé, Cameroun
   horaires: Messages reçus 24 h/24, 7 j/7 · Réponse les jours ouvrables, de 8 h à 20 h.
-reseaux: []
+reseaux:
+  - nom: Facebook
+    adresse: https://www.facebook.com/ztipro/
+communaute:
+  facebook: "https://www.facebook.com/ztipro/"
+  whatsapp: ""
 menu:
   - texte: Accueil
     lien: /

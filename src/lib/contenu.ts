@@ -11,6 +11,7 @@ export type Reglages = {
   description: string;
   contact: { email: string; whatsapp: string; telephone: string; adresse: string; horaires: string };
   reseaux: { nom: string; adresse: string }[];
+  communaute?: { facebook?: string; whatsapp?: string };
   menu: { texte: string; lien: string }[];
   bouton_principal: { texte: string; lien: string };
   mesures: { endpoint: string; pixel: string };
@@ -28,6 +29,17 @@ export async function references(): Promise<Reference[]> {
   const e = await getEntry('reglages', 'references');
   const liste = ((e?.data as { references?: Reference[] })?.references ?? []).filter(r => r.nom && r.logo);
   return liste.sort((a, b) => (a.ordre ?? 50) - (b.ordre ?? 50));
+}
+
+export type Avis = { nom: string; organisation?: string; note: number; texte: string; date?: string; afficher?: boolean };
+
+// avis validés par ZTi, les plus récents d'abord
+export async function avis(): Promise<Avis[]> {
+  const e = await getEntry('reglages', 'avis');
+  const liste = ((e?.data as { avis?: Avis[] })?.avis ?? []).filter(a => a.afficher !== false && a.nom && a.texte);
+  return liste
+    .map(a => ({ ...a, note: Math.min(5, Math.max(1, Math.round(Number(a.note) || 5))) }))
+    .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
 }
 
 export async function services() {

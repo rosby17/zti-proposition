@@ -287,9 +287,46 @@ a.carte:hover { transform: translateY(-4px); box-shadow: 0 18px 36px rgba(2,0,13
 .garanties span::before { content: '✓ '; color: var(--vif); }
 .message-erreur { background: var(--pale); color: var(--logo); border-radius: 12px; padding: 12px 14px; font-size: 14px; font-weight: 600; }
 .message-erreur[hidden] { display: none; }
+.etape { display: grid; gap: 18px; }
+.etape[hidden], .champ[hidden] { display: none; }
+.progression { margin: 0; font: 600 13px var(--boutons); letter-spacing: .06em; text-transform: uppercase; color: var(--vif); }
+.choix-liste { flex-direction: column; align-items: stretch; }
+.choix-liste button { text-align: left; border-radius: 14px; line-height: 1.35; }
+.retour { justify-self: start; background: none; border: 0; padding: 4px 0; font: 500 14px var(--boutons); color: var(--logo); cursor: pointer; }
+.retour:hover { text-decoration: underline; text-underline-offset: 4px; }
 .piege { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 @media (max-width: 860px) { .demande .grille { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .formulaire .deux { grid-template-columns: 1fr; } }
+
+/* ——— avis des clients ——— */
+.liste-avis { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-top: 36px; }
+.avis-carte { margin: 0; }
+.avis-carte .etoiles { color: #F5B301; font-size: 20px; letter-spacing: 2px; }
+.avis-carte blockquote { margin: 0; font-size: 16px; line-height: 1.6; color: var(--ardoise); }
+.avis-carte figcaption { margin-top: auto; padding-top: 8px; display: grid; gap: 2px; font-size: 14px; color: var(--gris); }
+.avis-carte figcaption b { color: var(--logo); font-size: 15px; }
+.donner-avis { margin-top: 32px; }
+.donner-avis summary { list-style: none; cursor: pointer; display: inline-flex; }
+.donner-avis summary::-webkit-details-marker { display: none; }
+.donner-avis[open] summary { display: none; }
+.donner-avis .formulaire, .avis-merci { max-width: 760px; }
+.donner-avis .mention { margin: 0; font-size: 13px; color: var(--gris); }
+.etoiles-choix { gap: 4px; }
+.etoiles-choix button { font-size: 30px; line-height: 1; padding: 4px 6px; border: 0; background: none; color: var(--lavande); }
+.etoiles-choix button:hover { border: 0; }
+.etoiles-choix button.allumee, .etoiles-choix button[aria-checked="true"] { background: none; color: #F5B301; }
+.avis-merci { background: var(--blanc); border-radius: 22px; padding: clamp(22px, 4vw, 34px); box-shadow: 0 26px 60px rgba(1,0,56,.12); display: grid; gap: 12px; justify-items: start; }
+.avis-merci h3, .avis-merci p { margin: 0; }
+.avis-merci[hidden], .donner-avis .formulaire[hidden] { display: none; }
+
+/* ——— page de confirmation ——— */
+.merci-sous-titre { font-size: clamp(20px, 2.4vw, 24px); margin: 44px 0 0; }
+.merci-etapes { list-style: none; counter-reset: e; padding: 0; margin: 18px 0 0; display: grid; gap: 12px; }
+.merci-etapes li { counter-increment: e; display: grid; grid-template-columns: 40px 1fr; column-gap: 14px; row-gap: 2px; padding: 16px 18px; border-radius: 16px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); }
+.merci-etapes li::before { content: counter(e); grid-row: span 2; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--logo); color: var(--blanc); font: 800 16px var(--titres); box-shadow: inset 0 0 0 2px var(--ciel); }
+.merci-etapes b { color: var(--blanc); } .merci-etapes span { color: var(--lavande); font-size: 15px; }
+.merci-liens { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-top: 18px; }
+.merci-liens .carte span:not(.plus) { color: var(--lavande); font-size: 15px; }
 
 /* ——— pied de page ——— */
 .pied { background: var(--nuit); color: var(--lavande); padding: 64px 0 28px; }
@@ -298,6 +335,12 @@ a.carte:hover { transform: translateY(-4px); box-shadow: 0 18px 36px rgba(2,0,13
 .pied ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 9px; }
 .pied a { color: var(--lavande); text-decoration: none; } .pied a:hover { color: var(--blanc); text-decoration: underline; }
 .pied .marque img { height: 44px; width: auto; margin-bottom: 14px; }
+.pied .suivre { margin-top: 18px; display: grid; gap: 10px; }
+.pied .suivre span { color: var(--blanc); font: 600 13px var(--boutons); letter-spacing: .08em; text-transform: uppercase; }
+.pied .suivre ul { display: flex; flex-wrap: wrap; gap: 10px; }
+.pied .suivre a { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); color: var(--blanc); transition: background-color .15s, transform .15s; }
+.pied .suivre a:hover { background: var(--logo); transform: translateY(-2px); text-decoration: none; }
+.pied .suivre svg { width: 20px; height: 20px; }
 .pied .bas { margin-top: 44px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.12); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 14px; color: var(--gris); }
 @media (max-width: 860px) { .pied .colonnes { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 520px) { .pied .colonnes { grid-template-columns: 1fr; } }

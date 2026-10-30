@@ -1,9 +1,16 @@
 ---
+import Icone from './Icone.astro';
 import { reglages, services, lien } from '../lib/contenu';
 const { sansMenu = false } = Astro.props as { sansMenu?: boolean };
 const r = await reglages();
 const liste = await services();
 const reseaux = (r.reseaux || []).filter(x => x.nom && x.adresse);
+// icônes « Suivez ZTi » : les réseaux des réglages, puis WhatsApp
+const icone = (nom: string) => (['facebook', 'linkedin', 'instagram', 'tiktok', 'youtube', 'whatsapp'].find(n => nom.toLowerCase().includes(n)) || 'lien') as any;
+const suivre = [
+  ...reseaux.map(x => ({ nom: x.nom, adresse: x.adresse, icone: icone(x.nom) })),
+  ...(r.contact.whatsapp && !reseaux.some(x => icone(x.nom) === 'whatsapp') ? [{ nom: 'WhatsApp', adresse: `https://wa.me/${r.contact.whatsapp.replace(/\D/g, '')}`, icone: 'whatsapp' as any }] : []),
+];
 const annee = new Date().getFullYear();
 ---
 <footer class="pied">
@@ -13,6 +20,12 @@ const annee = new Date().getFullYear();
         <img src={lien('/images/logo-blanc.png')} alt={r.nom} width="68" height="44" loading="lazy">
         <p>{r.signature}<br>Depuis {r.depuis}</p>
         <p>« {r.slogan} »</p>
+        {suivre.length > 0 && (
+          <div class="suivre">
+            <span>Suivez ZTi</span>
+            <ul>{suivre.map(x => <li><a href={x.adresse} rel="noopener" target="_blank" aria-label={`ZTi sur ${x.nom}`} title={x.nom}><Icone nom={x.icone} /></a></li>)}</ul>
+          </div>
+        )}
       </div>
       <div>
         <h4>Nos services</h4>
@@ -23,7 +36,7 @@ const annee = new Date().getFullYear();
         <ul>
           {!sansMenu && r.menu.map(m => <li><a href={lien(m.lien)}>{m.texte}</a></li>)}
           {sansMenu && <li><a href={lien('/')}>Découvrir ZTi</a></li>}
-          {reseaux.map(x => <li><a href={x.adresse} rel="noopener" target="_blank">{x.nom}</a></li>)}
+          <li><a href={lien('/#avis')}>Donner votre avis</a></li>
         </ul>
       </div>
       <div>
